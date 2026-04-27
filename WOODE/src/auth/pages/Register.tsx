@@ -134,22 +134,23 @@ function Register() {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#e1c8c8] via-white to-[#c8e1ca] py-12 px-4">
-      {/* Background Decor */}
-      <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-orange-200 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob"></div>
-      <div className="absolute top-[20%] right-[-10%] w-96 h-96 bg-green-200 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob animation-delay-2000"></div>
-      <div className="absolute bottom-[-20%] left-[20%] w-96 h-96 bg-[#4f6f41] rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
+    <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#151515] py-12 px-4">
+  {/* Background Decor */}
+  <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-[#8B6914] rounded-full mix-blend-screen filter blur-[120px] opacity-20 animate-blob"></div>
+  <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-[#D4A574] rounded-full mix-blend-screen filter blur-[120px] opacity-10 animate-blob animation-delay-2000"></div>
 
-      <div className="relative w-full max-w-md">
-        {/* Glassmorphism Form Card */}
-        <div className="bg-white/40 backdrop-blur-xl border border-white/50 rounded-3xl p-8 shadow-[0_8px_32px_0_rgba(31,38,135,0.1)]">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-extrabold text-[#4f6f41] tracking-tight">M A Y</h2>
-            <p className="text-sm font-medium text-neutral-600 mt-2">Tạo tài khoản mới</p>
-          </div>
+  <div className="relative w-full max-w-md px-4 mt-20">
+    <div className="bg-[#1A1A1A]/80 backdrop-blur-xl border border-[#3A3A3A] rounded-[32px] p-8 sm:p-10 shadow-2xl">
+        <div className="text-center mb-10">
+          <h2 className="text-4xl font-serif font-black tracking-widest text-[#F5F0EB]">
+            WOOD<span className="text-[#8B6914]">É</span>
+          </h2>
+          <p className="text-sm font-medium text-[#A09890] mt-4">Nghệ thuật không gian sống</p>
+          <p className="text-sm font-semibold text-[#D4A574] mt-1">Tạo tài khoản mới</p>
+        </div>
 
           {error && (
-            <div className="mb-6 rounded-xl border border-red-200 bg-red-50/80 backdrop-blur-sm px-4 py-3 text-sm text-red-600 animate-slideDown">
+            <div className="mb-6 rounded-xl border border-red-900/50 bg-red-950/30 px-4 py-3 text-sm text-red-400 animate-slideDown">
               {error}
             </div>
           )}
@@ -157,17 +158,17 @@ function Register() {
           {step === "form" ? (
             <form onSubmit={handleFormSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-bold text-[#4f6f41] mb-1 pl-1 drop-shadow-sm">Họ và tên *</label>
+                <label className="block text-sm font-semibold text-[#A09890] mb-2">Họ và tên *</label>
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <FiUser className="text-[#6c935b] group-focus-within:text-orange-500 transition-colors" size={18} />
+                    <FiUser className="text-[#6A6A6A] group-focus-within:text-[#8B6914] transition-colors" size={18} />
                   </div>
                   <input
                     name="fullName"
                     value={formData.fullName}
                     onChange={handleChange}
                     placeholder="Nguyễn Văn A"
-                    className="w-full bg-white/70 border border-white/60 text-neutral-800 text-sm rounded-xl focus:ring-2 focus:ring-[#6c935b] focus:border-transparent block pl-11 p-3 backdrop-blur-sm shadow-inner transition-all"
+                    className="w-full bg-[#2A2A2A] border border-[#3A3A3A] text-[#F5F0EB] text-sm rounded-xl focus:ring-1 focus:ring-[#8B6914] focus:border-[#8B6914] block pl-11 p-4 transition-all placeholder:text-[#6A6A6A] outline-none"
                     disabled={loading}
                     required
                   />
@@ -175,10 +176,10 @@ function Register() {
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-[#4f6f41] mb-1 pl-1 drop-shadow-sm">Số điện thoại *</label>
+                <label className="block text-sm font-semibold text-[#A09890] mb-2">Số điện thoại *</label>
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <FiPhone className="text-[#6c935b] group-focus-within:text-orange-500 transition-colors" size={18} />
+                    <FiPhone className="text-[#6A6A6A] group-focus-within:text-[#8B6914] transition-colors" size={18} />
                   </div>
                   <input
                     type="tel"
@@ -186,7 +187,7 @@ function Register() {
                     value={formData.phone}
                     onChange={handleChange}
                     placeholder="0912345678"
-                    className="w-full bg-white/70 border border-white/60 text-neutral-800 text-sm rounded-xl focus:ring-2 focus:ring-[#6c935b] focus:border-transparent block pl-11 p-3 backdrop-blur-sm shadow-inner transition-all"
+                    className="w-full bg-[#2A2A2A] border border-[#3A3A3A] text-[#F5F0EB] text-sm rounded-xl focus:ring-1 focus:ring-[#8B6914] focus:border-[#8B6914] block pl-11 p-4 transition-all placeholder:text-[#6A6A6A] outline-none"
                     disabled={loading}
                     required
                   />
@@ -194,10 +195,10 @@ function Register() {
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-[#4f6f41] mb-1 pl-1 drop-shadow-sm">Email (Tùy chọn)</label>
+                <label className="block text-sm font-semibold text-[#A09890] mb-2">Email</label>
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <FiMail className="text-[#6c935b] group-focus-within:text-orange-500 transition-colors" size={18} />
+                    <FiMail className="text-[#6A6A6A] group-focus-within:text-[#8B6914] transition-colors" size={18} />
                   </div>
                   <input
                     type="email"
@@ -205,17 +206,17 @@ function Register() {
                     value={formData.email}
                     onChange={handleChange}
                     placeholder="your@email.com"
-                    className="w-full bg-white/70 border border-white/60 text-neutral-800 text-sm rounded-xl focus:ring-2 focus:ring-[#6c935b] focus:border-transparent block pl-11 p-3 backdrop-blur-sm shadow-inner transition-all"
+                    className="w-full bg-[#2A2A2A] border border-[#3A3A3A] text-[#F5F0EB] text-sm rounded-xl focus:ring-1 focus:ring-[#8B6914] focus:border-[#8B6914] block pl-11 p-4 transition-all placeholder:text-[#6A6A6A] outline-none"
                     disabled={loading}
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-[#4f6f41] mb-1 pl-1 drop-shadow-sm">Địa chỉ giao hàng (Tùy chọn)</label>
+                <label className="block text-sm font-semibold text-[#A09890] mb-2">Địa chỉ giao hàng</label>
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <FiMapPin className="text-[#6c935b] group-focus-within:text-orange-500 transition-colors" size={18} />
+                    <FiMapPin className="text-[#6A6A6A] group-focus-within:text-[#8B6914] transition-colors" size={18} />
                   </div>
                   <input
                     type="text"
@@ -223,7 +224,7 @@ function Register() {
                     value={formData.address}
                     onChange={handleChange}
                     placeholder="123 Lê Lợi, Quận 1..."
-                    className="w-full bg-white/70 border border-white/60 text-neutral-800 text-sm rounded-xl focus:ring-2 focus:ring-[#6c935b] focus:border-transparent block pl-11 p-3 backdrop-blur-sm shadow-inner transition-all"
+                    className="w-full bg-[#2A2A2A] border border-[#3A3A3A] text-[#F5F0EB] text-sm rounded-xl focus:ring-1 focus:ring-[#8B6914] focus:border-[#8B6914] block pl-11 p-4 transition-all placeholder:text-[#6A6A6A] outline-none"
                     disabled={loading}
                   />
                 </div>
@@ -232,7 +233,7 @@ function Register() {
               <button
                 type="submit"
                 disabled={loading || !formData.fullName || !formData.phone}
-                className="w-full mt-4 bg-gradient-to-r from-[#4f6f41] to-[#6c935b] hover:from-orange-400 hover:to-orange-500 text-white font-bold rounded-2xl text-sm px-5 py-4 text-center shadow-lg transform transition-all active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
+                className="w-full mt-4 bg-gradient-to-r from-[#8B6914] to-[#D4A574] hover:scale-[1.02] text-[#1A1A1A] font-bold rounded-xl text-sm px-5 py-4 text-center shadow-lg transform transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? "Đang xử lý..." : "Nhận mã OTP"}
               </button>
@@ -240,24 +241,25 @@ function Register() {
           ) : (
             <form onSubmit={handleOtpSubmit} className="space-y-6 animate-fadeIn">
               <div className="text-center mb-4">
-                <p className="text-sm text-neutral-600">
-                  Mã xác nhận đã gửi đến <span className="font-bold text-[#4f6f41]">{formData.phone}</span>
+                <p className="text-sm text-[#A09890]">
+                  Mã xác nhận đã gửi đến{" "}
+                  <span className="font-bold text-[#D4A574]">{formData.phone}</span>
                 </p>
               </div>
               <div>
-                <label className="block text-sm font-bold text-[#4f6f41] mb-2 text-center drop-shadow-sm">
-                  Nhập mã OTP
+                <label className="block text-sm font-bold text-[#A09890] mb-2 text-center">
+                Nhập mã OTP
                 </label>
-                <div className="relative">
+                <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <FiCheckCircle className="text-[#6c935b]" size={18} />
+                    <FiCheckCircle className="text-[#6A6A6A] group-focus-within:text-[#8B6914] transition-colors" size={18} />
                   </div>
                   <input
                     type="text"
                     value={otp}
                     onChange={(e) => setOtp(e.target.value)}
                     placeholder="••••••"
-                    className="w-full bg-white/70 border border-white/60 text-center text-xl tracking-widest font-bold text-neutral-800 rounded-2xl focus:ring-2 focus:ring-[#6c935b] focus:border-transparent block py-4 backdrop-blur-sm shadow-inner transition-all"
+                    className="w-full bg-[#2A2A2A] border border-[#3A3A3A] text-center text-xl tracking-[0.5em] font-bold text-[#F5F0EB] rounded-xl focus:ring-1 focus:ring-[#8B6914] focus:border-[#8B6914] block py-4 transition-all placeholder:text-[#6A6A6A] outline-none"
                     disabled={loading}
                     required
                   />
@@ -266,7 +268,7 @@ function Register() {
               <button
                 type="submit"
                 disabled={loading || otp.length < 6}
-                className="w-full bg-gradient-to-r from-orange-400 to-orange-500 hover:from-[#4f6f41] hover:to-[#6c935b] text-white font-bold rounded-2xl text-sm px-5 py-4 text-center shadow-lg transform transition-all active:scale-95 disabled:opacity-70"
+                className="w-full bg-gradient-to-r from-[#8B6914] to-[#D4A574] hover:scale-[1.02] text-[#1A1A1A] font-bold rounded-xl text-sm px-5 py-4 text-center shadow-lg transform transition-all active:scale-95 disabled:opacity-50"
               >
                 {loading ? "Đang xác thực..." : "Xác nhận đăng ký"}
               </button>
@@ -274,7 +276,7 @@ function Register() {
               <button
                 type="button"
                 onClick={() => setStep("form")}
-                className="w-full text-center text-sm font-semibold text-neutral-500 hover:text-neutral-800 transition-colors mt-2"
+                className="w-full text-center text-sm font-semibold text-[#A09890] hover:text-[#D4A574] transition-colors mt-2"
               >
                 Quay lại để sửa thông tin
               </button>
@@ -283,10 +285,10 @@ function Register() {
 
           <div id="recaptcha-container"></div>
 
-          <div className="mt-8 text-center border-t border-white/40 pt-6">
-            <p className="text-sm font-medium text-neutral-600">
+          <div className="mt-8 text-center border-t border-[#3A3A3A] pt-6">
+            <p className="text-sm font-medium text-[#A09890]">
               Đã có tài khoản?{" "}
-              <Link to="/login" className="text-orange-500 hover:text-orange-600 font-bold transition-colors">
+              <Link to="/login" className="text-[#D4A574] hover:text-[#F5F0EB] font-bold transition-colors">
                 Đăng nhập
               </Link>
             </p>

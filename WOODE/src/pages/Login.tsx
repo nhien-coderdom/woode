@@ -176,9 +176,9 @@ function Login() {
                 <label className="block text-sm font-semibold text-[#A09890] mb-2 text-center">
                   Nhập mã OTP
                 </label>
-                <div className="relative">
+                <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <FiCheckCircle className="text-[#6A6A6A]" size={18} />
+                    <FiCheckCircle className="text-[#6A6A6A] group-focus-within:text-[#8B6914] transition-colors" size={18} />
                   </div>
                   <input
                     type="text"

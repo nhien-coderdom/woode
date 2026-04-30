@@ -15,55 +15,75 @@ export default function LoyaltyPointsSection({
   maxPointsCanUse,
   onChange,
 }: LoyaltyPointsSectionProps) {
-  const discountFromUsedPoints = (usePointsAmount / POINTS_STEP) * POINTS_TO_VND_RATE;
+  const discountFromUsedPoints =
+    (usePointsAmount / POINTS_STEP) * POINTS_TO_VND_RATE;
 
   return (
-    <div className="rounded-2xl border border-orange-200 bg-orange-50 p-6 sm:p-8">
-      <h2 className="text-lg sm:text-xl font-bold text-neutral-900 mb-4 flex items-center gap-2">
-        <FiAward className="text-[#086136]" size={20} />
+    <div className="rounded-[28px] border border-[#bd992d]/30 bg-[#F8F2E7] p-6 shadow-xl shadow-black/20 sm:p-8">
+      <h2 className="mb-5 flex items-center gap-3 text-lg font-bold text-[#2A1E13] sm:text-xl">
+        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#FFF8E6] text-[#bd992d] shadow-sm">
+          <FiAward size={20} />
+        </span>
         Sử dụng điểm tích lũy
       </h2>
 
-      <div className="mb-4">
-        <div className="flex justify-between items-center mb-2">
-          <label className="text-sm font-semibold text-neutral-900">
+      <div className="mb-5">
+        <div className="mb-2 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+          <label className="text-sm font-semibold text-[#3A2A12]">
             Điểm sẽ dùng
           </label>
-          <span className="text-sm text-neutral-600">
-            Có sẵn: {loyaltyPoints.toLocaleString()} điểm
+
+          <span className="text-sm font-medium text-[#6F5A3A]">
+            Có sẵn:{" "}
+            <span className="font-bold text-[#7A5C12]">
+              {loyaltyPoints.toLocaleString()} điểm
+            </span>
           </span>
         </div>
 
         <input
-  type="number"
-  value={usePointsAmount === 0 ? "" : usePointsAmount}
-  onChange={(e) => {
-    if (e.target.value === "") {
-      onChange(0);
-      return;
-    }
+          type="number"
+          value={usePointsAmount === 0 ? "" : usePointsAmount}
+          onChange={(e) => {
+            if (e.target.value === "") {
+              onChange(0);
+              return;
+            }
 
-    const parsedValue = parseInt(e.target.value, 10) || 0;
-    const normalizedValue = Math.max(0, Math.min(parsedValue, maxPointsCanUse));
-    onChange(normalizedValue);
-  }}
-  min={0}
-  max={maxPointsCanUse}
-  step={POINTS_STEP}
-  className="w-full rounded-lg border border-orange-300 bg-white px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
-  placeholder="Nhập số điểm muốn dùng"
-/>
+            const parsedValue = parseInt(e.target.value, 10) || 0;
+            const normalizedValue = Math.max(
+              0,
+              Math.min(parsedValue, maxPointsCanUse)
+            );
 
-        <p className="mt-2 text-xs text-neutral-600">
-          Tối đa có thể dùng: {maxPointsCanUse.toLocaleString()} điểm
+            onChange(normalizedValue);
+          }}
+          min={0}
+          max={maxPointsCanUse}
+          step={POINTS_STEP}
+          className="w-full rounded-xl border border-[#D8C79A] bg-white px-4 py-3 text-sm font-medium text-[#2F2308] placeholder:text-[#9A8B65] outline-none transition focus:border-[#bd992d] focus:ring-2 focus:ring-[#bd992d]/25"
+          placeholder="Nhập số điểm muốn dùng"
+        />
+
+        <p className="mt-2 text-xs font-medium text-[#6F5A3A]">
+          Tối đa có thể dùng:{" "}
+          <span className="font-bold text-[#7A5C12]">
+            {maxPointsCanUse.toLocaleString()} điểm
+          </span>
         </p>
       </div>
 
       {usePointsAmount > 0 && (
-        <div className="flex items-center gap-2 rounded-lg bg-green-50 border border-green-200 p-3">
-          <FiCheck className="text-green-600" size={18} />
-          <span className="text-sm text-green-700 font-medium">
-            Giảm {formatPrice(discountFromUsedPoints)}
+        <div className="flex items-center gap-3 rounded-xl border border-[#bd992d]/30 bg-[#FFF8E6] p-4">
+          <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-[#bd992d] text-white">
+            <FiCheck size={17} />
+          </span>
+
+          <span className="text-sm font-semibold text-[#6F5411]">
+            Đã áp dụng giảm{" "}
+            <span className="font-bold text-[#2A1E13]">
+              {formatPrice(discountFromUsedPoints)}
+            </span>
           </span>
         </div>
       )}

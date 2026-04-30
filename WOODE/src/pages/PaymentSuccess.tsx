@@ -21,13 +21,13 @@ export default function PaymentSuccess() {
   }, [clearCart]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-green-50 to-white">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-[#F5E6D3] to-white">
       <div className="mx-auto max-w-md px-4 text-center">
         <div className="mb-6">
-          <FiCheckCircle size={80} className="mx-auto text-green-500" />
+          <FiCheckCircle size={80} className="mx-auto text-[#D4AF37]" />
         </div>
 
-        <h1 className="mb-2 text-3xl font-bold text-green-700">
+        <h1 className="mb-2 text-3xl font-bold text-[#D4AF37]">
           Thanh toán thành công!
         </h1>
 
@@ -35,7 +35,7 @@ export default function PaymentSuccess() {
           Giao dịch của bạn đã được ghi nhận thành công.
         </p>
 
-        <div className="mb-4 rounded-lg border border-blue-200 bg-blue-50 p-3 text-sm text-blue-700">
+        <div className="mb-4 rounded-lg border border-[#503120] bg-[#ffeed7] p-3 text-sm text-[#502f03]">
           Đơn hàng của bạn đã được tạo và hiện đang ở trạng thái chờ staff xác nhận.
         </div>
 
@@ -60,7 +60,7 @@ export default function PaymentSuccess() {
         <div className="space-y-3">
           <button
             onClick={() => navigate("/my-orders")}
-            className="w-full rounded-lg bg-green-500 py-3 font-semibold text-white transition hover:bg-green-600"
+            className="w-full rounded-lg bg-[#8B6F47] py-3 font-semibold text-white transition hover:bg-[#D4AF37] hover:text-[#1A1A1A]"
           >
             Xem đơn hàng của tôi
           </button>

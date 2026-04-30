@@ -57,25 +57,25 @@ function RetryPaymentButton({ orderId }: RetryPaymentButtonProps) {
   };
 
   return (
-    <div className="space-y-3 mt-4 border-t border-[#3A3A3A] pt-4">
-      <p className="text-sm text-[#A09890] mb-3">Phương thức thanh toán thất bại. Vui lòng thử lại:</p>
+    <div className="space-y-3 mt-4 border-t border-[#4A4035] pt-4">
+      <p className="text-sm text-[#E0B84F] mb-3">Phương thức thanh toán thất bại. Vui lòng thử lại:</p>
       <div className="flex gap-3">
         <button
           onClick={handleRetryVNPay}
           disabled={loading}
-          className="flex-1 bg-[#2A2A2A] border border-[#8B6914] text-[#D4A574] hover:bg-[#8B6914] hover:text-[#1A1A1A] disabled:opacity-50 font-semibold py-2.5 rounded-xl transition"
+          className="flex-1 bg-[#1F1C18] border border-[#D8A94A] text-[#E0B84F] hover:bg-[#D8A94A] hover:text-[#1A1A1A] disabled:opacity-50 font-semibold py-2.5 rounded-xl transition"
         >
           {loading ? "Đang xử lý..." : "Thử lại VNPAY"}
         </button>
         <button
           onClick={handleRetryCOD}
           disabled={loading}
-          className="flex-1 bg-[#2A2A2A] border border-[#3A3A3A] text-[#F5F0EB] hover:bg-[#3A3A3A] disabled:opacity-50 font-semibold py-2.5 rounded-xl transition"
+          className="flex-1 bg-[#1F1C18] border border-[#4A4035] text-[#F5F0EB] hover:bg-[#4A4035] disabled:opacity-50 font-semibold py-2.5 rounded-xl transition"
         >
           {loading ? "Đang xử lý..." : "Chuyển sang COD"}
         </button>
       </div>
-      {error && <p className="text-red-400 text-sm mt-2">{error}</p>}
+      {error && <p className="text-[#D4AF37] text-sm mt-2">{error}</p>}
     </div>
   );
 }
@@ -185,10 +185,10 @@ function MyOrders() {
       case "PENDING": return "border-amber-500 bg-amber-900";
       case "CONFIRMED": return "border-sky-500 bg-sky-900";
       case "PREPARING": return "border-violet-500 bg-violet-900";
-      case "SHIPPING": return "border-orange-500 bg-orange-900";
+      case "SHIPPING": return "border-[#D4AF37] bg-[#8B6F47]/20";
       case "COMPLETED":
-      case "DELIVERED": return "border-[#6c935b] bg-[#2b4222]";
-      case "CANCELLED": return "border-red-500 bg-red-900";
+      case "DELIVERED": return "border-[#D4AF37] bg-[#8B6F47]/20";
+      case "CANCELLED": return "border-[#D4AF37] bg-[#8B6F47]/10";
       default: return "border-neutral-500 bg-neutral-800";
     }
   };
@@ -227,10 +227,10 @@ function MyOrders() {
   if (!user) {
     return (
       <div className="mx-auto mt-24 w-full max-w-5xl px-4 py-14 text-center">
-        <h1 className="mb-4 text-3xl font-serif font-bold text-[#F5F0EB]">Vui lòng đăng nhập</h1>
+        <h1 className="mb-4 text-3xl  font-['Noto_Serif'] font-bold text-[#F5F0EB]">Vui lòng đăng nhập</h1>
         <button
           onClick={() => navigate("/login")}
-          className="rounded-full bg-gradient-to-r from-[#8B6914] to-[#D4A574] px-8 py-3 text-[#1A1A1A] font-bold"
+          className="rounded-full bg-gradient-to-r from-[#D8A94A] to-[#E0B84F] px-8 py-3 text-[#1A1A1A] font-bold"
         >
           Đăng nhập
         </button>
@@ -239,24 +239,24 @@ function MyOrders() {
   }
 
   if (loading) {
-    return <div className="mx-auto w-full max-w-5xl px-4 py-24 text-center text-[#A09890]">Đang tải...</div>;
+    return <div className="mx-auto w-full max-w-5xl px-4 py-24 text-center text-[#E0B84F]">Đang tải...</div>;
   }
 
   return (
     <div className="mx-auto mt-24 w-full max-w-6xl px-4 py-8 text-[#F5F0EB]">
       {/* HEADER */}
       <div className="mb-10 text-center sm:text-left">
-        <h1 className="text-4xl font-serif font-black text-[#F5F0EB]">Đơn hàng của tôi</h1>
-        <p className="text-[#A09890] mt-2">
+        <h1 className="text-4xl  font-['Noto_Serif'] font-black text-[#F5F0EB]">Đơn hàng của tôi</h1>
+        <p className="text-[#E0B84F] mt-2">
           {filteredOrders.length} đơn hàng
         </p>
       </div>
 
       {/* FILTER */}
-      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between bg-[#1A1A1A] p-6 rounded-2xl border border-[#2A2A2A] shadow-lg">
+      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between bg-[#1A1A1A] p-6 rounded-2xl border border-[#1F1C18] shadow-lg">
         {/* Search */}
         <div className="w-full sm:w-1/2">
-          <label className="text-sm text-[#A09890] mb-2 block">Tìm kiếm sản phẩm</label>
+          <label className="text-sm text-[#E0B84F] mb-2 block">Tìm kiếm sản phẩm</label>
           <input
             value={search}
             onChange={(e) => {
@@ -264,14 +264,14 @@ function MyOrders() {
               setSearch(e.target.value);
             }}
             placeholder="Tên sản phẩm..."
-            className="w-full rounded-xl border border-[#3A3A3A] bg-[#2A2A2A] px-4 py-3 text-sm text-[#F5F0EB] placeholder:text-[#6A6A6A] focus:border-[#8B6914] outline-none transition-colors"
+            className="w-full rounded-xl border border-[#4A4035] bg-[#1F1C18] px-4 py-3 text-sm text-[#F5F0EB] placeholder:text-[#6A6A6A] focus:border-[#D8A94A] outline-none transition-colors"
           />
         </div>
 
         {/* Date filters */}
         <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
           <div>
-            <label className="text-sm text-[#A09890] mb-2 block">Từ ngày</label>
+            <label className="text-sm text-[#E0B84F] mb-2 block">Từ ngày</label>
             <input
               type="date"
               value={fromDate}
@@ -279,12 +279,12 @@ function MyOrders() {
                 setPage(1);
                 setFromDate(e.target.value);
               }}
-              className="w-full sm:w-auto rounded-xl border border-[#3A3A3A] bg-[#2A2A2A] px-4 py-3 text-sm text-[#F5F0EB] outline-none transition-colors focus:border-[#8B6914] color-scheme-dark"
+              className="w-full sm:w-auto rounded-xl border border-[#4A4035] bg-[#1F1C18] px-4 py-3 text-sm text-[#F5F0EB] outline-none transition-colors focus:border-[#D8A94A] color-scheme-dark"
               style={{ colorScheme: 'dark' }}
             />
           </div>
           <div>
-            <label className="text-sm text-[#A09890] mb-2 block">Đến ngày</label>
+            <label className="text-sm text-[#E0B84F] mb-2 block">Đến ngày</label>
             <input
               type="date"
               value={toDate}
@@ -292,7 +292,7 @@ function MyOrders() {
                 setPage(1);
                 setToDate(e.target.value);
               }}
-              className="w-full sm:w-auto rounded-xl border border-[#3A3A3A] bg-[#2A2A2A] px-4 py-3 text-sm text-[#F5F0EB] outline-none transition-colors focus:border-[#8B6914]"
+              className="w-full sm:w-auto rounded-xl border border-[#4A4035] bg-[#1F1C18] px-4 py-3 text-sm text-[#F5F0EB] outline-none transition-colors focus:border-[#D8A94A]"
               style={{ colorScheme: 'dark' }}
             />
           </div>
@@ -301,7 +301,7 @@ function MyOrders() {
 
       {/* EMPTY */}
       {paginatedOrders.length === 0 ? (
-        <div className="text-center py-16 text-[#A09890] bg-[#1A1A1A] rounded-2xl border border-[#2A2A2A]">
+        <div className="text-center py-16 text-[#E0B84F] bg-[#1A1A1A] rounded-2xl border border-[#1F1C18]">
           Không có đơn hàng nào
         </div>
       ) : (
@@ -326,8 +326,8 @@ function MyOrders() {
                   onClick={() => setPage(i + 1)}
                   className={`flex h-10 w-10 items-center justify-center rounded-full transition-colors ${
                     page === i + 1
-                      ? "bg-[#8B6914] text-[#1A1A1A] font-bold"
-                      : "bg-[#2A2A2A] text-[#A09890] border border-[#3A3A3A] hover:bg-[#3A3A3A] hover:text-[#F5F0EB]"
+                      ? "bg-[#D8A94A] text-[#1A1A1A] font-bold"
+                      : "bg-[#1F1C18] text-[#E0B84F] border border-[#4A4035] hover:bg-[#4A4035] hover:text-[#F5F0EB]"
                   }`}
                 >
                   {i + 1}
@@ -346,21 +346,21 @@ function MyOrders() {
         >
           <div 
             onClick={(e) => e.stopPropagation()} 
-            className="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-[32px] bg-[#1A1A1A] border border-[#3A3A3A] shadow-2xl custom-scrollbar" 
+            className="max-h-[90vh] w-full max-w-3xl overflow-y-auto rounded-[32px] bg-[#1A1A1A] border border-[#4A4035] shadow-2xl custom-scrollbar" 
           >
             {/* HEADER */}
-            <div className="sticky top-0 z-20 flex items-center justify-between border-b border-[#3A3A3A] bg-[#1A1A1A]/95 backdrop-blur px-8 py-5">
+            <div className="sticky top-0 z-20 flex items-center justify-between border-b border-[#4A4035] bg-[#1A1A1A]/95 backdrop-blur px-8 py-5">
               <div>
-                <h2 className="text-xl font-serif font-bold text-[#F5F0EB]"> 
+                <h2 className="text-xl  font-['Noto_Serif'] font-bold text-[#F5F0EB]"> 
                   Đơn hàng #{selectedOrder.id}
                 </h2>
-                <p className="text-sm text-[#A09890] mt-1">
+                <p className="text-sm text-[#E0B84F] mt-1">
                   {new Date(selectedOrder.createdAt).toLocaleDateString("vi-VN", { hour: '2-digit', minute: '2-digit' })} 
                 </p>
               </div>
               <button 
                 onClick={() => setSelectedOrder(null)}
-                className="h-10 w-10 rounded-full bg-[#2A2A2A] text-[#A09890] hover:bg-[#3A3A3A] hover:text-[#F5F0EB] flex items-center justify-center transition-colors"
+                className="h-10 w-10 rounded-full bg-[#1F1C18] text-[#E0B84F] hover:bg-[#4A4035] hover:text-[#F5F0EB] flex items-center justify-center transition-colors"
               >
                 ✕
               </button>
@@ -369,7 +369,7 @@ function MyOrders() {
             <div className="p-8 space-y-8">
               {/* TIMELINE */}
               <div>
-                <h3 className="mb-6 font-serif font-bold text-lg text-[#D4A574]">Tiến trình đơn hàng</h3>
+                <h3 className="mb-6  font-['Noto_Serif'] font-bold text-lg text-[#E0B84F]">Tiến trình đơn hàng</h3>
                 <div className="flex overflow-x-auto justify-center items-center text-center pb-4 custom-scrollbar">
                   {selectedOrder.logs?.map((log, index, arr) => {
                     const isLast = index === arr.length - 1;
@@ -377,12 +377,12 @@ function MyOrders() {
                       <div key={log.id} className="relative flex min-w-[120px] flex-col items-center text-center" >
                         <div className={`z-10 h-10 w-10 rounded-full border-[3px] shadow-lg ${getTimelineDotColor(log.status)}`} />
                         {!isLast && (
-                          <div className="absolute top-5 left-1/2 h-0.5 w-full bg-[#3A3A3A]" />
+                          <div className="absolute top-5 left-1/2 h-0.5 w-full bg-[#4A4035]" />
                         )}
                         <p className="mt-3 text-sm font-semibold text-[#F5F0EB]"> 
                           {getTimelineStatusText(log.status)}
                         </p>
-                        <span className="text-xs text-[#A09890] mt-1"> 
+                        <span className="text-xs text-[#E0B84F] mt-1"> 
                           {formatTime(log.createdAt)}
                         </span>
                       </div>
@@ -393,12 +393,12 @@ function MyOrders() {
 
               {/* ITEMS */}
               <div>
-                <h3 className="mb-4 font-serif font-bold text-lg text-[#D4A574]">Sản phẩm</h3>
+                <h3 className="mb-4  font-['Noto_Serif'] font-bold text-lg text-[#E0B84F]">Sản phẩm</h3>
                 <div className="space-y-4">
                   {selectedOrder.items.map((item) => (
                     <div
                       key={item.id}
-                      className="flex items-center gap-4 rounded-2xl bg-[#2A2A2A] border border-[#3A3A3A] p-4"
+                      className="flex items-center gap-4 rounded-2xl bg-[#1F1C18] border border-[#4A4035] p-4"
                     >
                       <img
                         src={item.product?.imageUrl || "/placeholder.png"}
@@ -407,11 +407,11 @@ function MyOrders() {
                       />
                       <div className="flex-1 text-left">
                         <p className="font-bold text-[#F5F0EB] text-lg">{item.productName}</p>
-                        <p className="text-sm text-[#A09890] mt-1">
+                        <p className="text-sm text-[#E0B84F] mt-1">
                           Số lượng: {item.quantity}
                         </p>
                       </div>
-                      <p className="font-bold text-[#D4A574] text-lg">
+                      <p className="font-bold text-[#E0B84F] text-lg">
                         {formatPrice(getOrderItemTotal(item))}
                       </p>
                     </div>
@@ -421,24 +421,24 @@ function MyOrders() {
 
               {/* INFO */}
               <div className="grid gap-6 sm:grid-cols-2">
-                <div className="rounded-2xl bg-[#2A2A2A] border border-[#3A3A3A] p-6">
-                  <p className="text-xs uppercase tracking-wider text-[#A09890] mb-3">Thông tin nhận hàng</p>
+                <div className="rounded-2xl bg-[#1F1C18] border border-[#4A4035] p-6">
+                  <p className="text-xs uppercase tracking-wider text-[#E0B84F] mb-3">Thông tin nhận hàng</p>
                   <p className="font-bold text-[#F5F0EB] text-lg">{selectedOrder.user?.name}</p>
-                  <p className="text-sm text-[#D4A574] mt-1 mb-2">{selectedOrder.phone}</p> 
-                  <p className="text-sm text-[#A09890] leading-relaxed">
+                  <p className="text-sm text-[#E0B84F] mt-1 mb-2">{selectedOrder.phone}</p> 
+                  <p className="text-sm text-[#E0B84F] leading-relaxed">
                     {selectedOrder.address}
                   </p> 
                 </div> 
                 
-                <div className="rounded-2xl bg-[#2A2A2A] border border-[#3A3A3A] p-6">
-                  <p className="text-xs uppercase tracking-wider text-[#A09890] mb-3">Điểm thưởng</p>
+                <div className="rounded-2xl bg-[#1F1C18] border border-[#4A4035] p-6">
+                  <p className="text-xs uppercase tracking-wider text-[#E0B84F] mb-3">Điểm thưởng</p>
                   <div className="space-y-2">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-[#A09890]">Đã sử dụng</span>
+                      <span className="text-sm text-[#E0B84F]">Đã sử dụng</span>
                       <span className="font-semibold text-[#F5F0EB]">{selectedOrder.usedPoint}</span>
                     </div>
-                    <div className="flex justify-between items-center pt-2 border-t border-[#3A3A3A]">
-                      <span className="text-sm text-[#A09890]">Tích lũy thêm</span>
+                    <div className="flex justify-between items-center pt-2 border-t border-[#4A4035]">
+                      <span className="text-sm text-[#E0B84F]">Tích lũy thêm</span>
                       <span className="font-bold text-[#4A7C59]">+{selectedOrder.earnedPoint}</span>
                     </div>
                   </div>
@@ -447,22 +447,22 @@ function MyOrders() {
 
               {/* PAYMENT STATUS */}
               {selectedOrder.payments && selectedOrder.payments.length > 0 && (
-                <div className="rounded-2xl bg-[#2A2A2A] border border-[#3A3A3A] p-6">
-                  <p className="text-xs uppercase tracking-wider text-[#A09890] mb-4">Lịch sử thanh toán</p>
+                <div className="rounded-2xl bg-[#1F1C18] border border-[#4A4035] p-6">
+                  <p className="text-xs uppercase tracking-wider text-[#E0B84F] mb-4">Lịch sử thanh toán</p>
                   <div className="space-y-4">
                     {selectedOrder.payments.map((payment) => (
-                      <div key={payment.id} className="flex justify-between items-center bg-[#1A1A1A] p-4 rounded-xl border border-[#3A3A3A]">
+                      <div key={payment.id} className="flex justify-between items-center bg-[#1A1A1A] p-4 rounded-xl border border-[#4A4035]">
                         <div>
                           <p className="text-sm font-bold text-[#F5F0EB]">
                             {payment.method === "CASH" ? "Thanh toán khi nhận hàng (COD)" : payment.method}
                           </p>
-                          <p className="text-xs text-[#A09890] mt-1">{payment.amount.toLocaleString("vi-VN")}đ</p>
+                          <p className="text-xs text-[#E0B84F] mt-1">{payment.amount.toLocaleString("vi-VN")}đ</p>
                         </div>
                         <span className={`text-xs font-bold px-3 py-1.5 rounded-full ${
-                          payment.status === "SUCCESS" ? "bg-[#2b4222] text-[#6c935b] border border-[#6c935b]/30" :
-                          payment.status === "FAILED" ? "bg-red-900/30 text-red-400 border border-red-500/30" :
+                          payment.status === "SUCCESS" ? "bg-[#8B6F47]/20 text-[#D4AF37] border border-[#D4AF37]/30" :
+                          payment.status === "FAILED" ? "bg-[#8B6F47]/10 text-[#D4AF37] border border-[#D4AF37]/30" :
                           payment.status === "PENDING" ? "bg-amber-900/30 text-amber-500 border border-amber-500/30" :
-                          "bg-[#3A3A3A] text-[#A09890]"
+                          "bg-[#4A4035] text-[#E0B84F]"
                         }`}>
                           {payment.status === "SUCCESS" ? "Thành công" :
                            payment.status === "FAILED" ? "Thất bại" :
@@ -482,9 +482,9 @@ function MyOrders() {
               )}
 
               {/* TOTAL */} 
-              <div className="flex justify-between items-center border-t border-[#3A3A3A] pt-6 pb-2">
-                <span className="text-xl font-serif text-[#F5F0EB]">Tổng cộng</span> 
-                <span className="text-3xl font-bold text-[#8B6914]"> {formatPrice(selectedOrder.total)} </span>
+              <div className="flex justify-between items-center border-t border-[#4A4035] pt-6 pb-2">
+                <span className="text-xl  font-['Noto_Serif'] text-[#F5F0EB]">Tổng cộng</span> 
+                <span className="text-3xl font-bold text-[#D8A94A]"> {formatPrice(selectedOrder.total)} </span>
               </div>
             </div>
           </div>

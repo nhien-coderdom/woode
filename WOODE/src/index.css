@@ -1,17 +1,18 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;500;600;700;800&display=swap");
 @import "tailwindcss";
 
 :root {
   --color-bg-primary: #151515;
   --color-bg-secondary: #1A1A1A;
-  --color-bg-tertiary: #2A2A2A;
+  --color-bg-tertiary: #1F1C18;
   
   --color-text-primary: #F5F0EB;
-  --color-text-secondary: #A09890;
+  --color-text-secondary: #E0B84F;
   
-  --color-accent-primary: #8B6914; /* Dark Gold */
-  --color-accent-secondary: #D4A574; /* Light Gold */
+  --color-accent-primary: #D8A94A; /* Dark Gold */
+  --color-accent-secondary: #E0B84F; /* Light Gold */
   
-  --color-border: #3A3A3A;
+  --color-border: #4A4035;
 }
 
 body {

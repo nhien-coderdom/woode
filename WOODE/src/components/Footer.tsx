@@ -3,7 +3,7 @@ import { FaFacebook, FaTiktok, FaEnvelope } from "react-icons/fa";
 
 function Footer() {
   return (
-    <footer className="w-full bg-[#151515] text-[#F5F0EB] border-t border-[#2A2A2A]">
+    <footer className="w-full bg-[#151515] text-[#F5F0EB] border-t border-[#1F1C18]">
 
       <div className="max-w-7xl mx-auto px-6 py-16">
         {/* TOP CONTENT */}
@@ -11,16 +11,16 @@ function Footer() {
 
           {/* LEFT: LOGO */}
           <div className="flex flex-col items-center md:items-start gap-4">
-            <Link to="/" className="font-serif text-4xl font-black tracking-widest text-[#F5F0EB]">
-              WOOD<span className="text-[#8B6914]">É</span>
+            <Link to="/" className=" font-['Noto_Serif'] text-4xl font-black tracking-widest text-[#F5F0EB]">
+              WOOD<span className="text-[#D8A94A]">É</span>
             </Link>
-            <p className="text-[#A09890] text-sm text-center md:text-left mt-2 max-w-xs">
+            <p className="text-[#E0B84F] text-sm text-center md:text-left mt-2 max-w-xs">
               Nội thất đương đại mang phong cách Bắc Âu, kiến tạo không gian sống đẳng cấp và tinh tế.
             </p>
           </div>
 
           {/* CENTER: MAP MINI */}
-          <div className="w-full h-40 rounded-xl overflow-hidden border border-[#3A3A3A] shadow-lg">
+          <div className="w-full h-40 rounded-xl overflow-hidden border border-[#4A4035] shadow-lg">
             <iframe
               title="map"
               width="100%"
@@ -31,8 +31,8 @@ function Footer() {
           </div>
 
           {/* RIGHT: CONTACT */}
-          <div className="flex flex-col gap-4 text-sm text-[#A09890] items-center md:items-end">
-            <h4 className="font-serif font-bold text-lg text-[#D4A574]">Liên hệ</h4>
+          <div className="flex flex-col gap-4 text-sm text-[#E0B84F] items-center md:items-end">
+            <h4 className=" font-['Noto_Serif'] font-bold text-lg text-[#E0B84F]">Liên hệ</h4>
             <div className="flex items-center gap-3">
               <span>273 An Dương Vương, TP.HCM</span>
             </div>
@@ -42,29 +42,29 @@ function Footer() {
             </div>
 
             <div className="flex items-center gap-6 mt-4 text-xl text-[#F5F0EB]">
-              <FaFacebook className="cursor-pointer hover:text-[#8B6914] hover:scale-110 transition-all" />
-              <FaTiktok className="cursor-pointer hover:text-[#8B6914] hover:scale-110 transition-all" />
-              <FaEnvelope className="cursor-pointer hover:text-[#8B6914] hover:scale-110 transition-all" />
+              <FaFacebook className="cursor-pointer hover:text-[#D8A94A] hover:scale-110 transition-all" />
+              <FaTiktok className="cursor-pointer hover:text-[#D8A94A] hover:scale-110 transition-all" />
+              <FaEnvelope className="cursor-pointer hover:text-[#D8A94A] hover:scale-110 transition-all" />
             </div>
           </div>
 
         </div>
 
         {/* DIVIDER */}
-        <div className="border-t border-[#2A2A2A] my-10"></div>
+        <div className="border-t border-[#1F1C18] my-10"></div>
 
         {/* BOTTOM MENU */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-sm text-[#A09890]">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-sm text-[#E0B84F]">
 
           <div className="flex flex-wrap justify-center gap-6">
-            <Link to="/loyalty" className="hover:text-[#D4A574] transition-colors">Thành viên & Điểm thưởng</Link>
-            <Link to="/contact" className="hover:text-[#D4A574] transition-colors">Liên hệ</Link>
-            <Link to="/purchase-policy" className="hover:text-[#D4A574] transition-colors">Chính sách mua hàng</Link>
-            <Link to="/privacy-policy" className="hover:text-[#D4A574] transition-colors">Bảo mật</Link>
-            <Link to="/terms" className="hover:text-[#D4A574] transition-colors">Điều khoản</Link>
+            <Link to="/loyalty" className="hover:text-[#E0B84F] transition-colors">Thành viên & Điểm thưởng</Link>
+            <Link to="/contact" className="hover:text-[#E0B84F] transition-colors">Liên hệ</Link>
+            <Link to="/purchase-policy" className="hover:text-[#E0B84F] transition-colors">Chính sách mua hàng</Link>
+            <Link to="/privacy-policy" className="hover:text-[#E0B84F] transition-colors">Bảo mật</Link>
+            <Link to="/terms" className="hover:text-[#E0B84F] transition-colors">Điều khoản</Link>
           </div>
 
-          <div className="text-[#6A6A6A] font-serif">
+          <div className="text-[#6A6A6A]  font-serif">
             © 2026 WOODÉ. All rights reserved.
           </div>
         </div>

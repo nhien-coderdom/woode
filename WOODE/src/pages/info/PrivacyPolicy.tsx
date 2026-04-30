@@ -5,13 +5,13 @@ export default function PrivacyPolicy() {
     <div className="max-w-4xl mx-auto py-12 px-6 mt-20">
       <div className="text-center mb-16">
         <h1 className="text-4xl font-black text-[#086136] mb-4">Chính sách bảo mật</h1>
-        <p className="text-neutral-600">Sự riêng tư của bạn là ưu tiên hàng đầu của chúng tôi tại MAY.</p>
+        <p className="text-neutral-600">Sự riêng tư của bạn là ưu tiên hàng đầu của chúng tôi tại WOODÉ.</p>
       </div>
 
       <div className="space-y-12">
         <section>
           <div className="flex items-center gap-3 mb-4">
-            <FiUserCheck className="text-[#6c935b] text-2xl" />
+            <FiUserCheck className="text-[#8B6F47] text-2xl" />
             <h2 className="text-2xl font-bold">1. Thu thập thông tin</h2>
           </div>
           <p className="text-neutral-500 leading-relaxed pl-9">
@@ -25,23 +25,23 @@ export default function PrivacyPolicy() {
             <h2 className="text-2xl font-bold">2. Sử dụng thông tin</h2>
           </div>
           <p className="text-neutral-500 leading-relaxed pl-9">
-            Thông tin của bạn sẽ được sử dụng để xác nhận đơn hàng, liên lạc giao hàng, tích lũy điểm thưởng và gửi thông báo về các ưu đãi mới nhất từ MAY (nếu bạn đồng ý nhận thông báo).
+            Thông tin của bạn sẽ được sử dụng để xác nhận đơn hàng, liên lạc giao hàng, tích lũy điểm thưởng và gửi thông báo về các ưu đãi mới nhất từ WOODÉ (nếu bạn đồng ý nhận thông báo).
           </p>
         </section>
 
         <section>
           <div className="flex items-center gap-3 mb-4">
-            <FiShield className="text-orange-500 text-2xl" />
+            <FiShield className="text-[#8B6F47] text-2xl" />
             <h2 className="text-2xl font-bold">3. Cam kết bảo mật</h2>
           </div>
           <p className="text-neutral-500 leading-relaxed pl-9">
-            MAY cam kết tuyệt đối không bán, chia sẻ hay trao đổi thông tin khách hàng cho bất kỳ bên thứ ba nào vì mục đích thương mại. Mọi giao dịch thanh toán trực tuyến đều được bảo mật qua cổng thanh toán tiêu chuẩn quốc tế.
+            WOODÉ cam kết tuyệt đối không bán, chia sẻ hay trao đổi thông tin khách hàng cho bất kỳ bên thứ ba nào vì mục đích thương mại. Mọi giao dịch thanh toán trực tuyến đều được bảo mật qua cổng thanh toán tiêu chuẩn quốc tế.
           </p>
         </section>
 
         <section>
           <div className="flex items-center gap-3 mb-4">
-            <FiLock className="text-red-500 text-2xl" />
+            <FiLock className="text-[#D4AF37] text-2xl" />
             <h2 className="text-2xl font-bold">4. Quyền của khách hàng</h2>
           </div>
           <p className="text-neutral-500 leading-relaxed pl-9">

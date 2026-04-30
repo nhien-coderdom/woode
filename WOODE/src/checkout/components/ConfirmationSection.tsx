@@ -13,45 +13,53 @@ export default function ConfirmationSection({
   formData,
 }: ConfirmationSectionProps) {
   return (
-    <div className="rounded-2xl border border-neutral-200 bg-white p-6 sm:p-8">
-      <h2 className="text-lg sm:text-xl font-bold text-neutral-900 mb-6">
+    <div className="rounded-2xl border border-[#eadcae] bg-white p-6 sm:p-8 shadow-sm">
+      <h2 className="text-lg sm:text-xl font-bold text-[#3f2f0b] mb-6">
         Xác nhận đơn hàng
       </h2>
 
-      <div className="space-y-4 border-b border-neutral-200 pb-6">
-        <div className="flex justify-between text-sm">
-          <span className="text-neutral-600">Tên:</span>
-          <span className="font-semibold">{formData.fullName}</span>
+      <div className="space-y-4 border-b border-[#eadcae] pb-6">
+        <div className="flex justify-between gap-4 text-sm">
+          <span className="text-[#7a6a3a]">Tên:</span>
+          <span className="font-semibold text-[#2f2308]">
+            {formData.fullName}
+          </span>
         </div>
 
-        <div className="flex justify-between text-sm">
-          <span className="text-neutral-600">Email:</span>
-          <span className="font-semibold">{formData.email}</span>
+        <div className="flex justify-between gap-4 text-sm">
+          <span className="text-[#7a6a3a]">Email:</span>
+          <span className="font-semibold text-[#2f2308]">
+            {formData.email}
+          </span>
         </div>
 
-        <div className="flex justify-between text-sm">
-          <span className="text-neutral-600">Điện thoại:</span>
-          <span className="font-semibold">{formData.phone}</span>
+        <div className="flex justify-between gap-4 text-sm">
+          <span className="text-[#7a6a3a]">Điện thoại:</span>
+          <span className="font-semibold text-[#2f2308]">
+            {formData.phone}
+          </span>
         </div>
 
-        <div className="flex justify-between text-sm">
-          <span className="text-neutral-600">Địa chỉ:</span>
-          <span className="font-semibold text-right max-w-xs">
+        <div className="flex justify-between gap-4 text-sm">
+          <span className="text-[#7a6a3a]">Địa chỉ:</span>
+          <span className="font-semibold text-[#2f2308] text-right max-w-xs">
             {getFullAddress(formData)}
           </span>
         </div>
 
-        <div className="flex justify-between text-sm">
-          <span className="text-neutral-600">Phương thức:</span>
-          <span className="font-semibold">
+        <div className="flex justify-between gap-4 text-sm">
+          <span className="text-[#7a6a3a]">Phương thức:</span>
+          <span className="font-semibold text-[#2f2308]">
             {getPaymentMethodLabel(formData.paymentMethod)}
           </span>
         </div>
       </div>
 
-      <div className="mt-6 rounded-lg bg-green-50 border border-green-200 p-4">
-        <p className="text-sm text-green-700 flex items-center gap-2">
-          <FiCheck size={18} />
+      <div className="mt-6 rounded-xl bg-[#f7efd6] border border-[#bd992d]/30 p-4">
+        <p className="text-sm text-[#6f5411] flex items-center gap-2">
+          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#bd992d] text-white flex-shrink-0">
+            <FiCheck size={16} />
+          </span>
           Tất cả thông tin đã được xác nhận. Hãy bấm "Đặt hàng" để hoàn tất.
         </p>
       </div>

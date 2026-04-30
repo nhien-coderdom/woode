@@ -33,43 +33,43 @@ export default function OrderSummary({
   const navigate = useNavigate();
 
   return (
-    <div className="h-fit sticky top-8 rounded-2xl border border-neutral-200 bg-white p-6 sm:p-8 shadow-sm">
-      <h3 className="text-lg sm:text-xl font-bold text-neutral-900 mb-6">
+    <div className="sticky top-28 h-fit rounded-[28px] border border-[#bd992d]/30 bg-[#F8F2E7] p-6 shadow-xl shadow-black/20 sm:p-8">
+      <h3 className="mb-6 text-lg font-bold text-[#2A1E13] sm:text-xl">
         Tóm tắt đơn hàng
       </h3>
 
-      <div className="space-y-3 rounded-lg bg-neutral-50 p-4 mb-6">
+      <div className="mb-6 space-y-3 rounded-2xl border border-[#D8C79A] bg-white/75 p-4">
         {cart.map((item, index) => {
           const toppingNames = getToppingNames(item.toppings);
 
           return (
             <div
               key={`${item.id}-${index}`}
-              className="flex justify-between items-start"
+              className="flex items-start justify-between gap-4 border-b border-[#E8DDBF] pb-3 last:border-b-0 last:pb-0"
             >
-              <div className="flex-1">
-                <span className="text-xs sm:text-sm font-medium text-neutral-900">
+              <div className="min-w-0 flex-1">
+                <span className="block text-sm font-bold text-[#2A1E13]">
                   {item.title}
                 </span>
 
                 {"size" in item && item.size && (
-                  <div className="text-xs text-neutral-600">
+                  <div className="mt-1 text-xs font-medium text-[#6F5A3A]">
                     Size {String(item.size).toUpperCase()}
                   </div>
                 )}
 
                 {toppingNames.length > 0 && (
-                  <div className="text-xs text-neutral-600">
-                    +{toppingNames.join(", ")}
+                  <div className="mt-1 text-xs font-medium text-[#6F5A3A]">
+                    + {toppingNames.join(", ")}
                   </div>
                 )}
 
-                <div className="text-xs text-neutral-600">
+                <div className="mt-1 text-xs font-medium text-[#6F5A3A]">
                   x {item.quantity}
                 </div>
               </div>
 
-              <span className="font-semibold text-xs sm:text-sm">
+              <span className="shrink-0 text-sm font-bold text-[#7A5C12]">
                 {formatPrice(item.price * item.quantity)}
               </span>
             </div>
@@ -77,46 +77,51 @@ export default function OrderSummary({
         })}
       </div>
 
-      <div className="space-y-3 border-b border-neutral-200 pb-4">
-        <div className="flex justify-between text-xs sm:text-sm text-neutral-600">
+      <div className="space-y-3 border-b border-[#D8C79A] pb-5">
+        <div className="flex justify-between gap-4 text-sm text-[#5F5238]">
           <span>Tạm tính:</span>
-          <span>{formatPrice(subtotal)}</span>
+          <span className="font-semibold text-[#2A1E13]">
+            {formatPrice(subtotal)}
+          </span>
         </div>
 
         {usePointsAmount > 0 && (
-          <div className="flex justify-between text-xs sm:text-sm text-green-600 font-semibold">
+          <div className="flex justify-between gap-4 text-sm font-semibold text-[#7A5C12]">
             <span>Giảm từ điểm:</span>
             <span>-{formatPrice(discountFromPoints)}</span>
           </div>
         )}
 
         {discountFromTier > 0 && (
-          <div className="flex justify-between text-xs sm:text-sm text-blue-600 font-semibold">
+          <div className="flex justify-between gap-4 text-sm font-semibold text-[#7A5C12]">
             <span>Giảm hạng thành viên ({discountPercentage * 100}%):</span>
             <span>-{formatPrice(discountFromTier)}</span>
           </div>
         )}
       </div>
 
-      <div className="mt-4 flex justify-between">
-        <span className="font-bold text-neutral-900">Tổng cộng</span>
-        <span className="text-2xl sm:text-3xl font-bold text-[#086136]">
+      <div className="mt-5 flex items-end justify-between gap-4">
+        <span className="font-bold text-[#2A1E13]">Tổng cộng</span>
+
+        <span className="text-2xl font-black text-[#5A3A12] sm:text-3xl">
           {formatPrice(finalAmount)}
         </span>
       </div>
 
       {usePointsAmount > 0 && (
-        <div className="mt-4 rounded-lg bg-blue-50 border border-blue-200 p-3">
-          <p className="text-xs text-blue-700">
-            <span className="font-semibold">💡 Hãy biết:</span> Bạn sẽ nhận{" "}
-            {Math.floor(finalAmount / 10)} điểm từ đơn hàng này!
+        <div className="mt-5 rounded-xl border border-[#bd992d]/30 bg-[#FFF8E6] p-4">
+          <p className="text-xs font-medium leading-5 text-[#6F5411]">
+            <span className="font-bold text-[#2A1E13]">Gợi ý:</span> Bạn sẽ
+            nhận {Math.floor(finalAmount / 10).toLocaleString()} điểm từ đơn
+            hàng này.
           </p>
         </div>
       )}
 
       <button
+        type="button"
         onClick={() => navigate("/cart")}
-        className="mt-6 w-full rounded-lg border-2 border-neutral-300 py-3 text-xs sm:text-sm font-semibold text-neutral-700 transition hover:border-neutral-400 flex items-center justify-center gap-2"
+        className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl border border-[#D8C79A] bg-white px-4 py-3 text-sm font-bold text-[#3A2A12] transition hover:border-[#bd992d] hover:bg-[#FFF8E6]"
       >
         <FiX size={16} />
         Quay về giỏ hàng

@@ -17,7 +17,7 @@ function FurnitureGrid() {
 
   if (loading) {
     return (
-      <section className="w-full flex justify-center py-10 text-[#A09890]">
+      <section className="w-full flex justify-center py-10 text-[#E0B84F]">
         Đang tải sản phẩm...
       </section>
     );
@@ -25,7 +25,7 @@ function FurnitureGrid() {
 
   if (error) {
     return (
-      <section className="w-full flex flex-col items-center py-10 text-[#A09890]">
+      <section className="w-full flex flex-col items-center py-10 text-[#E0B84F]">
         <p>Không thể tải sản phẩm</p>
         <p className="text-sm">{error}</p>
       </section>
@@ -34,7 +34,7 @@ function FurnitureGrid() {
 
   if (!products || products.length === 0) {
     return (
-      <section className="w-full flex justify-center py-10 text-[#A09890]">
+      <section className="w-full flex justify-center py-10 text-[#E0B84F]">
         Không có sản phẩm nào
       </section>
     );
@@ -45,10 +45,10 @@ function FurnitureGrid() {
   return (
     <section className="w-full max-w-7xl mx-auto px-4 py-16">
       <div className="mb-10 text-center">
-        <h2 className="mt-1 font-serif text-3xl sm:text-4xl font-black text-[#F5F0EB]">
+        <h2 className="mt-1  font-['Noto_Serif'] text-3xl sm:text-4xl font-black text-[#F5F0EB]">
           Khám phá bộ sưu tập
         </h2>
-        <p className="mt-3 text-sm sm:text-base text-[#A09890]">
+        <p className="mt-3 text-sm sm:text-base text-[#E0B84F]">
           Thiết kế tinh tế, chất liệu cao cấp
         </p>
       </div>
@@ -79,7 +79,7 @@ function FurnitureGrid() {
       <div className="flex justify-center mt-12">
         <button
           onClick={() => navigate("/products")}
-          className="rounded-full border border-[#8B6914] bg-transparent px-8 py-3 text-sm font-semibold text-[#D4A574] transition hover:bg-[#8B6914] hover:text-[#1A1A1A]"
+          className="rounded-full border border-[#D8A94A] bg-transparent px-8 py-3 text-sm font-semibold text-[#E0B84F] transition hover:bg-[#D8A94A] hover:text-[#1A1A1A]"
         >
           Xem tất cả sản phẩm
         </button>

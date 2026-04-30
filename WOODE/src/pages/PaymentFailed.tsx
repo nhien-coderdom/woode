@@ -22,17 +22,17 @@ export default function PaymentFailed() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-red-50 to-white">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-[#F5E6D3] to-white">
       <div className="text-center max-w-md mx-auto px-4">
         <div className="mb-6">
-          <FiAlertCircle size={80} className="text-red-500 mx-auto" />
+          <FiAlertCircle size={80} className="text-[#D4AF37] mx-auto" />
         </div>
 
-        <h1 className="text-3xl font-bold text-red-700 mb-2">
+        <h1 className="text-3xl font-bold text-[#D4AF37] mb-2">
           Thanh toán thất bại!
         </h1>
 
-        <p className="text-gray-600 mb-6">{getErrorMessage()}</p>
+        <p className="text-[#522a2a] mb-6">{getErrorMessage()}</p>
 
         {orderId && (
           <div className="bg-white rounded-lg p-4 mb-6 border border-gray-200">

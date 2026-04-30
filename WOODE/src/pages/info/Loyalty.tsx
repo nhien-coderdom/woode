@@ -1,69 +1,204 @@
-import { FiGift, FiStar, FiAward, FiInfo } from "react-icons/fi";
+import { FiAward } from "react-icons/fi";
+import React from "react";
+import { Modal } from "../../profile/components/Modal";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function Loyalty() {
+  const [open, setOpen] = React.useState(false);
+  const { user } = useAuth();
+
+  // Use real user data from context, fallback to defaults if not logged in
+  const userData = user ? {
+    totalSpent: user.totalSpent || 0,
+    totalOrders: user.totalOrders || 0,
+    loyaltyPoint: user.loyaltyPoint || 0,
+  } : {
+    totalSpent: 0,
+    totalOrders: 0,
+    loyaltyPoint: 0,
+  };
+
+  const formatPrice = (value: number) => {
+    return value.toLocaleString("vi-VN");
+  };
+
+  const tiers = [
+    { key: "NORMAL", name: "Thường", min: 0, max: 9999999, discount: 0 },
+    { key: "SILVER", name: "Bạc", min: 10000000, max: 49999999, discount: 0 },
+    { key: "GOLD", name: "Vàng", min: 50000000, max: 199999999, discount: 5 },
+    { key: "PLATINUM", name: "Bạch Kim", min: 200000000, max: Infinity, discount: 10 },
+  ];
+
+  const spent = userData.totalSpent;
+
+  const currentIndex = tiers.findIndex((t) => spent >= t.min && spent <= t.max);
+
+  const currentTier = tiers[currentIndex];
+
+  const nextTier =
+    currentIndex < tiers.length - 1 ? tiers[currentIndex + 1] : null;
+
+  const progress = nextTier
+    ? ((spent - currentTier.min) / (nextTier.min - currentTier.min)) * 100
+    : 100;
+
+  const remaining = nextTier ? nextTier.min - spent : 0;
+
   return (
     <div className="max-w-4xl mx-auto py-12 px-6 mt-20">
-      <div className="text-center mb-16">
-        <h1 className="text-4xl font-black text-[#086136] mb-4">Thành viên & Tích điểm</h1>
-        <p className="text-neutral-600">Càng uống nhiều, ưu đãi càng lớn. Khám phá đặc quyền dành riêng cho bạn tại MAY.</p>
-      </div>
+      <div className="w-full rounded-2xl bg-[#d6d3cf] p-8 shadow-xl text-[#2A1E13]">
+        {/* ===== HEADER (CENTER) ===== */}
+        <div className="flex flex-col items-center mb-8">
+          <FiAward className="text-4xl mb-2 drop-shadow-lg text-[#8F6418]" />
 
-      {/* POINTS LOGIC */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-        <div className="bg-white p-8 rounded-3xl shadow-sm border border-neutral-100 flex flex-col items-center text-center">
-          <div className="w-16 h-16 bg-orange-100 text-orange-600 rounded-2xl flex items-center justify-center mb-6">
-            <FiStar size={32} />
-          </div>
-          <h3 className="text-xl font-bold mb-2">Tích lũy điểm</h3>
-          <p className="text-neutral-500 text-sm">Với mỗi <span className="font-bold text-[#086136]">1.000 VNĐ</span> thanh toán, bạn sẽ nhận được <span className="font-bold text-[#086136]">1 điểm</span> vào tài khoản.</p>
+          <h1 className="text-4xl font-extrabold tracking-wide drop-shadow-lg text-[#2A1E13]">
+            {currentTier.name.toUpperCase()}
+          </h1>
+
+          <p className="text-[#6F5A3A] text-sm mt-2">
+            Hạng thành viên
+            {currentTier.discount > 0 && (
+              <span className="ml-2 text-[#A87822] font-bold">
+                • Giảm {currentTier.discount}%
+              </span>
+            )}
+          </p>
+
+          <button onClick={() => setOpen(true)} className="text-[#A87822] font-semibold">
+            Xem chi tiết
+          </button>
         </div>
 
-        <div className="bg-white p-8 rounded-3xl shadow-sm border border-neutral-100 flex flex-col items-center text-center">
-          <div className="w-16 h-16 bg-[#6c935b]/10 text-[#6c935b] rounded-2xl flex items-center justify-center mb-6">
-            <FiGift size={32} />
-          </div>
-          <h3 className="text-xl font-bold mb-2">Sử dụng điểm</h3>
-          <p className="text-neutral-500 text-sm">Điểm tích lũy có thể quy đổi trực tiếp thành giảm giá. <span className="font-bold text-[#086136]">1 điểm = 100 VNĐ</span> giảm giá cho hóa đơn tiếp theo.</p>
-        </div>
-      </div>
+        {/* ===== CARD ===== */}
+        <div className="w-full bg-gray-50 rounded-2xl p-6 shadow-lg">
+          <div className="text-[#2A1E13]">
+            {/* ===== TEXT MỤC TIÊU ===== */}
+            {nextTier ? (
+              <p className="text-sm font-semibold text-[#5A4328] mb-4 text-center">
+                Còn{" "}
+                <span className="text-[#A87822] font-bold">
+                  {formatPrice(remaining)}
+                </span>{" "}
+                để lên hạng <span className="font-bold">{nextTier.name}</span>
+              </p>
+            ) : (
+              <p className="text-sm font-semibold text-[#A87822] mb-4 text-center">
+                👑 Bạn đã đạt hạng cao nhất!
+              </p>
+            )}
 
-      {/* TIERS */}
-      <div className="mb-16">
-        <h2 className="text-2xl font-bold mb-8 flex items-center gap-3">
-          <FiAward className="text-orange-500" /> Hạng thành viên
-        </h2>
-        <div className="space-y-4">
-          {[
-            { label: 'Thành viên Bạc', points: 'Mặc định', color: 'bg-slate-100', icon: '🥈' },
-            { label: 'Thành viên Vàng', points: 'Từ 1.000 điểm', color: 'bg-yellow-50', icon: '🥇' },
-            { label: 'Thành viên Kim cương', points: 'Từ 5.000 điểm', color: 'bg-blue-50', icon: '💎' },
-          ].map((tier, idx) => (
-            <div key={idx} className={`flex items-center justify-between p-6 rounded-2xl ${tier.color} border border-white/50`}>
-              <div className="flex items-center gap-4">
-                <span className="text-3xl">{tier.icon}</span>
-                <div>
-                  <h4 className="font-bold text-neutral-800">{tier.label}</h4>
-                  <p className="text-xs text-neutral-500">{tier.points}</p>
-                </div>
+            {/* ===== PROGRESS BAR ===== */}
+            <div className="relative h-4 w-full bg-[#e1ddd0] rounded-full overflow-hidden mb-4">
+              <div
+                className="h-full bg-gradient-to-r from-[#d6b658] via-[#c1a242] to-[#bd992d] transition-all duration-500"
+                style={{ width: `${Math.min(progress, 100)}%` }}
+              />
+
+              {/* TEXT Ở GIỮA */}
+              <div className="absolute inset-0 flex items-center justify-center text-xs font-bold text-[#2A1E13] drop-shadow">
+                {formatPrice(spent)} /{" "}
+                {nextTier ? formatPrice(nextTier.min) : "MAX"}
               </div>
-              <button className="text-xs font-semibold px-4 py-2 bg-white rounded-full shadow-sm">Xem đặc quyền</button>
             </div>
-          ))}
+
+            {/* ===== MỐC ===== */}
+            <div className="flex justify-between text-xs text-[#6F5A3A] mb-5">
+              <span>{formatPrice(currentTier.min)}</span>
+              <span>{nextTier ? formatPrice(nextTier.min) : "MAX"}</span>
+            </div>
+
+            {/* ===== STATS ===== */}
+            <div className="grid grid-cols-2 gap-3 text-center">
+              <div className="bg-blue-50 rounded-lg p-3">
+                <p className="text-xs text-[#6F5A3A] font-medium">Đơn hàng</p>
+                <p className="font-bold text-lg text-[#A87822] mt-1">
+                  {userData.totalOrders || 0}
+                </p>
+              </div>
+
+              <div className="bg-purple-50 rounded-lg p-3">
+                <p className="text-xs text-[#6F5A3A] font-medium">Điểm</p>
+                <p className="font-bold text-lg text-[#A87822] mt-1">
+                  {userData.loyaltyPoint || 0}
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* NOTES */}
-      <div className="bg-orange-50 p-6 rounded-2xl border border-orange-100 flex gap-4">
-        <FiInfo className="text-orange-500 shrink-0 mt-1" />
-        <div className="text-sm text-orange-800">
-          <p className="font-bold mb-1">Lưu ý:</p>
-          <ul className="list-disc list-inside space-y-1 opacity-80">
-            <li>Điểm có giá trị trong vòng 1 năm kể từ ngày phát sinh.</li>
-            <li>Điểm không thể quy đổi thành tiền mặt.</li>
-            <li>Hạng thành viên được xét lại sau mỗi chu kỳ 12 tháng.</li>
-          </ul>
+      <Modal open={open} onClose={() => setOpen(false)}>
+        <div className="max-w-md text-[#2A1E13]">
+          {/* TITLE */}
+          <h2 className="text-xl font-bold text-center mb-4 text-[#2A1E13]">
+            🎁 Quy tắc tích điểm
+          </h2>
+
+          {/* ===== CÁCH TÍNH ĐIỂM ===== */}
+          <div className="bg-gray-50 rounded-lg p-3 mb-3">
+            <p className="font-semibold mb-1 text-[#2A1E13]">Cách tính điểm</p>
+            <p className="text-sm text-[#6F5A3A]">
+              Với mỗi đơn hàng, bạn sẽ nhận được điểm thưởng dựa trên giá trị
+              đơn:
+            </p>
+            <p className="text-sm mt-1 text-[#2A1E13]">
+              💰{" "}
+              <span className="font-bold text-[#A87822]">
+                1.000 điểm = 1.000 vnđ
+              </span>
+            </p>
+          </div>
+
+          {/* ===== HẠNG THÀNH VIÊN ===== */}
+          <div className="bg-gray-50 rounded-lg p-3 mb-3">
+            <p className="font-semibold mb-2 text-[#2A1E13]">Hạng thành viên & Giảm giá</p>
+
+            <div className="space-y-1 text-sm text-[#5A4328]">
+              <p>
+                <span className="font-medium text-[#2A1E13]">Thường:</span> dưới 10.000.000đ{" "}
+                <span className="text-[#A87822] font-bold">- 0%</span>
+              </p>
+              <p>
+                <span className="font-medium text-[#2A1E13]">Bạc:</span> 10.000.000đ – dưới 50.000.000đ{" "}
+                <span className="text-[#A87822] font-bold">- 0%</span>
+              </p>
+              <p>
+                <span className="font-medium text-[#2A1E13]">Vàng:</span> 50.000.000đ – dưới 200.000.000đ{" "}
+                <span className="text-[#A87822] font-bold">- 5%</span>
+              </p>
+              <p>
+                <span className="font-medium text-[#2A1E13]">Bạch Kim:</span> từ 200.000.000đ trở lên{" "}
+                <span className="text-[#A87822] font-bold">- 10%</span>
+              </p>
+            </div>
+          </div>
+
+          {/* ===== QUYỀN LỢI ===== */}
+          <div className="bg-gray-50 rounded-lg p-3 mb-3">
+            <p className="font-semibold mb-1 text-[#2A1E13]">Quyền lợi</p>
+
+            <ul className="text-sm text-[#6F5A3A] space-y-1">
+              <li>💰 Tích điểm từ mỗi đơn hàng (10% giá trị)</li>
+              <li>🎁 Dùng điểm để giảm giá (1.000 điểm = 1.000đ)</li>
+              <li>📈 VÀNG: giảm 5% cho mỗi đơn</li>
+              <li>👑 BẠCH KIM: giảm 10% cho mỗi đơn</li>
+            </ul>
+          </div>
+
+          {/* ===== LƯU Ý ===== */}
+          <div className="text-xs text-[#6F5A3A] mb-4 text-center">
+            * Giảm giá theo hạng được tính trên tổng tiền hóa đơn (trước khi dùng điểm)</div>
+
+
+          {/* BUTTON */}
+          <button
+            onClick={() => setOpen(false)}
+            className="w-full bg-[#645b42] text-white py-2 rounded-lg font-semibold hover:opacity-90 transition"
+          >
+            Đóng
+          </button>
         </div>
-      </div>
+      </Modal>
     </div>
   );
 }

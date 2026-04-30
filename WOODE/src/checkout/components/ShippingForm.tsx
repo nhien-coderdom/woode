@@ -13,7 +13,9 @@ type Props = {
   setAsDefaultAddress: boolean;
   editingAddressId: string | null;
   onInputChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => void;
   onSelectAddress: (addressId: string) => void;
   onEditAddress: (addressId: string) => void;
@@ -24,7 +26,7 @@ type Props = {
   onToggleDefault: (checked: boolean) => void;
 };
 
-export default function AddressSection({
+export default function ShippingForm({
   formData,
   savedAddresses,
   selectedAddressId,
@@ -40,14 +42,22 @@ export default function AddressSection({
   onSaveAddress,
   onToggleDefault,
 }: Props) {
-  const [pendingDeleteAddressId, setPendingDeleteAddressId] = useState<string | null>(null);
+  const [pendingDeleteAddressId, setPendingDeleteAddressId] = useState<
+    string | null
+  >(null);
+
+  const inputClass =
+    "w-full rounded-xl border border-[#D8C79A] bg-white px-4 py-3 text-sm text-[#2F2308] placeholder:text-[#9A8B65] outline-none transition focus:border-[#bd992d] focus:ring-2 focus:ring-[#bd992d]/25";
+
   return (
     <>
-      <div className="rounded-xl border border-orange-200 bg-white p-6 shadow-sm">
-        <h2 className="mb-4 text-lg font-bold text-[#086136]">Địa chỉ nhận hàng</h2>
+      <div className="rounded-[28px] border border-[#bd992d]/30 bg-[#F8F2E7] p-6 shadow-xl shadow-black/20 sm:p-8">
+        <h2 className="mb-6 text-xl font-bold text-[#2A1E13]">
+          Địa chỉ nhận hàng
+        </h2>
 
         {savedAddresses.length > 0 && (
-          <div className="mb-4 space-y-3">
+          <div className="mb-5 space-y-3">
             {savedAddresses.map((address) => (
               <div
                 key={address.id}
@@ -60,41 +70,49 @@ export default function AddressSection({
                     onSelectAddress(address.id);
                   }
                 }}
-                className={`w-full rounded-xl border p-4 text-left transition ${
+                className={`w-full rounded-2xl border p-5 text-left shadow-sm transition ${
                   selectedAddressId === address.id
-                    ? "border-[#086136] bg-orange-50"
-                    : "border-neutral-200 bg-white hover:border-orange-300"
+                    ? "border-[#bd992d] bg-[#FFF8E6] ring-2 ring-[#bd992d]/20"
+                    : "border-[#D8C79A] bg-white/80 hover:border-[#bd992d]/70 hover:bg-[#FFF8E6]"
                 }`}
               >
-                <div className="flex flex-wrap items-center gap-2">
-                  <p className="font-semibold text-neutral-900">{address.fullName}</p>
-                  <span className="text-sm text-neutral-600">{address.email}</span>
-                  <span className="text-sm text-neutral-600">{address.phone}</span>
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+                  <p className="text-base font-bold text-[#1F1609]">
+                    {address.fullName}
+                  </p>
+
+                  <span className="text-sm text-[#5F5238]">
+                    {address.email}
+                  </span>
+
+                  <span className="text-sm text-[#5F5238]">
+                    {address.phone}
+                  </span>
                 </div>
-                <p className="mt-1 text-sm text-neutral-600">
-                  {[address.address]
-                    .filter(Boolean)
-                    .join(", ")}
+
+                <p className="mt-2 text-sm text-[#4A3A1F]">
+                  {[address.address].filter(Boolean).join(", ")}
                 </p>
 
-                <div className="mt-3 flex gap-2">
+                <div className="mt-4 flex gap-2">
                   <button
                     type="button"
                     onClick={(e) => {
                       e.stopPropagation();
                       onEditAddress(address.id);
                     }}
-                    className="rounded-md border border-neutral-300 px-3 py-1 text-xs font-semibold text-neutral-700"
+                    className="rounded-lg border border-[#D8C79A] bg-white px-4 py-2 text-xs font-semibold text-[#3A2A12] transition hover:border-[#bd992d] hover:bg-[#F6EDD4]"
                   >
                     Chỉnh sửa
                   </button>
+
                   <button
                     type="button"
                     onClick={(e) => {
                       e.stopPropagation();
                       setPendingDeleteAddressId(address.id);
                     }}
-                    className="rounded-md border border-[#086136] px-3 py-1 text-xs font-semibold text-[#086136]"
+                    className="rounded-lg border border-[#bd992d] bg-[#F8F2E7] px-4 py-2 text-xs font-semibold text-[#7A5C12] transition hover:bg-[#bd992d] hover:text-white"
                   >
                     Xóa
                   </button>
@@ -104,11 +122,11 @@ export default function AddressSection({
           </div>
         )}
 
-        <div className="mb-4 flex items-center gap-3">
+        <div className="mb-5 flex flex-wrap items-center gap-3">
           <button
             type="button"
             onClick={onStartAddNew}
-            className="rounded-lg border border-[#086136] px-4 py-2 text-sm font-semibold text-[#086136]"
+            className="rounded-xl border border-[#bd992d] bg-[#F8F2E7] px-5 py-3 text-sm font-bold text-[#6F5411] transition hover:bg-[#bd992d] hover:text-white"
           >
             + Thêm địa chỉ mới
           </button>
@@ -117,7 +135,7 @@ export default function AddressSection({
             <button
               type="button"
               onClick={onCancelAddOrEdit}
-              className="rounded-lg border border-neutral-300 px-4 py-2 text-sm font-semibold text-neutral-600"
+              className="rounded-xl border border-[#D8C79A] bg-white px-5 py-3 text-sm font-semibold text-[#6F5A3A] transition hover:border-[#bd992d] hover:bg-[#FFF8E6]"
             >
               Hủy thêm mới
             </button>
@@ -126,15 +144,19 @@ export default function AddressSection({
 
         {isAddingNewAddress && (
           <>
-            <div className="mb-3 flex items-center gap-2">
+            <div className="mb-4 flex items-center gap-2">
               <input
                 id="default-address"
                 type="checkbox"
                 checked={setAsDefaultAddress}
                 onChange={(e) => onToggleDefault(e.target.checked)}
-                className="h-4 w-4"
+                className="h-4 w-4 accent-[#bd992d]"
               />
-              <label htmlFor="default-address" className="text-sm text-neutral-700">
+
+              <label
+                htmlFor="default-address"
+                className="text-sm font-medium text-[#5F5238]"
+              >
                 Đặt làm địa chỉ mặc định
               </label>
             </div>
@@ -147,8 +169,9 @@ export default function AddressSection({
                 value={formData.fullName}
                 onChange={onInputChange}
                 required
-                className="rounded-lg border border-neutral-300 px-4 py-3 text-sm"
+                className={inputClass}
               />
+
               <input
                 type="tel"
                 name="phone"
@@ -156,7 +179,7 @@ export default function AddressSection({
                 value={formData.phone}
                 onChange={onInputChange}
                 required
-                className="rounded-lg border border-neutral-300 px-4 py-3 text-sm"
+                className={inputClass}
               />
             </div>
 
@@ -167,7 +190,7 @@ export default function AddressSection({
               value={formData.email}
               onChange={onInputChange}
               required
-              className="mt-4 w-full rounded-lg border border-neutral-300 px-4 py-3 text-sm"
+              className={`mt-4 ${inputClass}`}
             />
 
             <textarea
@@ -177,14 +200,14 @@ export default function AddressSection({
               onChange={onInputChange}
               required
               rows={3}
-              className="mt-4 w-full rounded-lg border border-neutral-300 px-4 py-3 text-sm"
+              className={`mt-4 resize-none ${inputClass}`}
             />
 
-            <div className="mt-4 flex justify-end">
+            <div className="mt-5 flex justify-end">
               <button
                 type="button"
                 onClick={onSaveAddress}
-                className="rounded-lg bg-[#086136] px-5 py-2 text-sm font-semibold text-white hover:opacity-90"
+                className="rounded-xl bg-gradient-to-r from-[#A87822] via-[#bd992d] to-[#E3C16F] px-6 py-3 text-sm font-bold text-[#100C08] shadow-md shadow-black/15 transition hover:scale-[1.02]"
               >
                 {editingAddressId ? "Cập nhật địa chỉ" : "Lưu địa chỉ"}
               </button>
@@ -193,33 +216,39 @@ export default function AddressSection({
         )}
 
         {!isAddingNewAddress && selectedAddressId && (
-          <p className="text-sm text-neutral-500">Đang sử dụng địa chỉ đã chọn để giao hàng.</p>
+          <p className="rounded-xl bg-[#FFF8E6] px-4 py-3 text-sm font-medium text-[#6F5411]">
+            Đang sử dụng địa chỉ đã chọn để giao hàng.
+          </p>
         )}
       </div>
 
       {pendingDeleteAddressId && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
-          <div className="w-full max-w-sm rounded-xl bg-white p-5 shadow-xl">
-            <h3 className="text-base font-bold text-neutral-900">Xóa địa chỉ?</h3>
-            <p className="mt-2 text-sm text-neutral-600">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4 backdrop-blur-sm">
+          <div className="w-full max-w-sm rounded-2xl border border-[#bd992d]/30 bg-[#F8F2E7] p-6 shadow-2xl">
+            <h3 className="text-base font-bold text-[#2F2308]">
+              Xóa địa chỉ?
+            </h3>
+
+            <p className="mt-2 text-sm leading-6 text-[#6F5A3A]">
               Bạn có chắc muốn xóa địa chỉ này không?
             </p>
 
-            <div className="mt-5 flex justify-end gap-2">
+            <div className="mt-6 flex justify-end gap-3">
               <button
                 type="button"
                 onClick={() => setPendingDeleteAddressId(null)}
-                className="rounded-lg border border-neutral-300 px-4 py-2 text-sm font-semibold text-neutral-700"
+                className="rounded-xl border border-[#D8C79A] bg-white px-4 py-2 text-sm font-semibold text-[#3A2A12] transition hover:bg-[#FFF8E6]"
               >
                 Thoát
               </button>
+
               <button
                 type="button"
                 onClick={() => {
                   onDeleteAddress(pendingDeleteAddressId);
                   setPendingDeleteAddressId(null);
                 }}
-                className="rounded-lg bg-[#086136] px-4 py-2 text-sm font-semibold text-white"
+                className="rounded-xl bg-[#bd992d] px-4 py-2 text-sm font-bold text-white transition hover:opacity-90"
               >
                 Xóa
               </button>

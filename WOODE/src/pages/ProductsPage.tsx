@@ -67,13 +67,13 @@ function ProductsPage() {
   }, [filteredProducts, currentPage]);
 
   return (
-    <div className="bg-[#151515] min-h-screen text-[#F5F0EB]">
+    <div className="bg-[#2A261F] min-h-screen text-[#F5F0EB]">
       {/* TITLE */}
       <div className="mb-12 text-center pt-32 px-4">
-        <h2 className="mt-1 font-serif text-3xl sm:text-5xl font-black text-[#F5F0EB]">
+        <h2 className="mt-1  font-['Noto_Serif'] text-3xl sm:text-5xl font-black text-[#F5F0EB]">
           Bộ Sưu Tập Nội Thất
         </h2>
-        <p className="mt-4 text-[#A09890] max-w-2xl mx-auto">
+        <p className="mt-4 text-[#E0B84F] max-w-3xl mx-auto">
           Khám phá những thiết kế đẳng cấp, mang lại vẻ đẹp vượt thời gian cho không gian sống của bạn.
         </p>
       </div>
@@ -84,24 +84,24 @@ function ProductsPage() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
 
           {/* LEFT FILTER */}
-          <div className="lg:col-span-1 bg-[#1A1A1A] rounded-3xl shadow-xl p-6 h-fit w-full border border-[#2A2A2A]">
-            <h3 className="font-serif font-bold text-xl mb-6 text-[#D4A574]">Tìm kiếm</h3>
+          <div className="lg:col-span-1 bg-[#1A1A1A] rounded-3xl shadow-xl p-6 h-fit w-full border border-[#1F1C18]">
+            <h3 className=" font-['Noto_Serif'] font-bold text-xl mb-6 text-[#E0B84F]">Tìm kiếm</h3>
 
             <input
               type="text"
               placeholder="Tên sản phẩm..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full mb-8 px-4 py-3 bg-[#2A2A2A] border border-[#3A3A3A] rounded-xl text-[#F5F0EB] placeholder:text-[#6A6A6A] focus:outline-none focus:border-[#8B6914] transition-colors"
+              className="w-full mb-8 px-4 py-3 bg-[#1F1C18] border border-[#4A4035] rounded-xl text-[#F5F0EB] placeholder:text-[#6A6A6A] focus:outline-none focus:border-[#D8A94A] transition-colors"
             />
 
-            <h3 className="font-serif font-bold text-xl mb-4 text-[#D4A574]">Danh mục</h3>
+            <h3 className=" font-['Noto_Serif'] font-bold text-xl mb-4 text-[#E0B84F]">Danh mục</h3>
             <div className="flex flex-col gap-2 mb-8">
               <button
                 onClick={() => setSelectedCategory("all")}
                 className={`text-left px-4 py-3 rounded-xl transition-all ${selectedCategory === "all"
-                  ? "bg-[#8B6914] text-[#1A1A1A] font-bold"
-                  : "bg-transparent text-[#A09890] hover:bg-[#2A2A2A] hover:text-[#F5F0EB]"
+                  ? "bg-[#D8A94A] text-[#1A1A1A] font-bold"
+                  : "bg-transparent text-[#E0B84F] hover:bg-[#1F1C18] hover:text-[#F5F0EB]"
                   }`}
               >
                 Tất cả sản phẩm
@@ -112,8 +112,8 @@ function ProductsPage() {
                   key={cat.id}
                   onClick={() => setSelectedCategory(cat.slug)}
                   className={`text-left px-4 py-3 rounded-xl transition-all ${selectedCategory === cat.slug
-                    ? "bg-[#8B6914] text-[#1A1A1A] font-bold"
-                    : "bg-transparent text-[#A09890] hover:bg-[#2A2A2A] hover:text-[#F5F0EB]"
+                    ? "bg-[#D8A94A] text-[#1A1A1A] font-bold"
+                    : "bg-transparent text-[#E0B84F] hover:bg-[#1F1C18] hover:text-[#F5F0EB]"
                     }`}
                 >
                   {cat.name}
@@ -121,21 +121,21 @@ function ProductsPage() {
               ))}
             </div>
 
-            <h3 className="font-serif font-bold text-xl mb-4 text-[#D4A574]">Mức giá</h3>
+            <h3 className=" font-['Noto_Serif'] font-bold text-xl mb-4 text-[#E0B84F]">Mức giá</h3>
             <div className="flex flex-col gap-3">
               <input
                 type="number"
                 placeholder="Từ (VNĐ)"
                 value={minPrice}
                 onChange={(e) => setMinPrice(e.target.value)}
-                className="w-full px-4 py-3 bg-[#2A2A2A] border border-[#3A3A3A] rounded-xl text-[#F5F0EB] placeholder:text-[#6A6A6A] focus:outline-none focus:border-[#8B6914] transition-colors"
+                className="w-full px-4 py-3 bg-[#1F1C18] border border-[#4A4035] rounded-xl text-[#F5F0EB] placeholder:text-[#6A6A6A] focus:outline-none focus:border-[#D8A94A] transition-colors"
               />
               <input
                 type="number"
                 placeholder="Đến (VNĐ)"
                 value={maxPrice}
                 onChange={(e) => setMaxPrice(e.target.value)}
-                className="w-full px-4 py-3 bg-[#2A2A2A] border border-[#3A3A3A] rounded-xl text-[#F5F0EB] placeholder:text-[#6A6A6A] focus:outline-none focus:border-[#8B6914] transition-colors"
+                className="w-full px-4 py-3 bg-[#1F1C18] border border-[#4A4035] rounded-xl text-[#F5F0EB] placeholder:text-[#6A6A6A] focus:outline-none focus:border-[#D8A94A] transition-colors"
               />
             </div>
           </div>
@@ -144,19 +144,19 @@ function ProductsPage() {
           <div className="lg:col-span-3">
 
             {loading && (
-              <div className="text-center py-20 text-[#A09890]">
+              <div className="text-center py-20 text-[#E0B84F]">
                 Đang tải sản phẩm...
               </div>
             )}
 
             {error && (
-              <div className="text-center py-20 text-red-400">
+              <div className="text-center py-20 text-[#D4AF37]">
                 {error}
               </div>
             )}
 
             {!loading && !error && filteredProducts.length === 0 && (
-              <div className="text-center py-20 text-[#A09890] bg-[#1A1A1A] rounded-3xl border border-[#2A2A2A]">
+              <div className="text-center py-20 text-[#E0B84F] bg-[#1A1A1A] rounded-3xl border border-[#1F1C18]">
                 Không tìm thấy sản phẩm phù hợp với tiêu chí của bạn.
               </div>
             )}
@@ -193,7 +193,7 @@ function ProductsPage() {
                       onClick={() =>
                         setCurrentPage((p) => Math.max(p - 1, 1))
                       }
-                      className="px-4 py-2 bg-[#2A2A2A] border border-[#3A3A3A] text-[#A09890] rounded-full disabled:opacity-50 hover:bg-[#3A3A3A] hover:text-[#F5F0EB] transition-colors"
+                      className="px-4 py-2 bg-[#1F1C18] border border-[#4A4035] text-[#E0B84F] rounded-full disabled:opacity-50 hover:bg-[#4A4035] hover:text-[#F5F0EB] transition-colors"
                       disabled={currentPage === 1}
                     >
                       Trước
@@ -206,8 +206,8 @@ function ProductsPage() {
                           key={page}
                           onClick={() => setCurrentPage(page)}
                           className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${currentPage === page
-                            ? "bg-[#8B6914] text-[#1A1A1A] font-bold"
-                            : "bg-[#2A2A2A] text-[#A09890] border border-[#3A3A3A] hover:bg-[#3A3A3A] hover:text-[#F5F0EB]"
+                            ? "bg-[#D8A94A] text-[#1A1A1A] font-bold"
+                            : "bg-[#1F1C18] text-[#E0B84F] border border-[#4A4035] hover:bg-[#4A4035] hover:text-[#F5F0EB]"
                             }`}
                         >
                           {page}
@@ -222,7 +222,7 @@ function ProductsPage() {
                           Math.min(p + 1, totalPages)
                         )
                       }
-                      className="px-4 py-2 bg-[#2A2A2A] border border-[#3A3A3A] text-[#A09890] rounded-full disabled:opacity-50 hover:bg-[#3A3A3A] hover:text-[#F5F0EB] transition-colors"
+                      className="px-4 py-2 bg-[#1F1C18] border border-[#4A4035] text-[#E0B84F] rounded-full disabled:opacity-50 hover:bg-[#4A4035] hover:text-[#F5F0EB] transition-colors"
                       disabled={currentPage === totalPages}
                     >
                       Sau

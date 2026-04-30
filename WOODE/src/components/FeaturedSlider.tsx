@@ -32,7 +32,7 @@ function FeaturedSlider() {
 
   if (loading) {
     return (
-      <section className="w-full h-full flex items-center justify-center py-10 text-[#A09890]">
+      <section className="w-full flex items-center justify-center py-10 text-[#E0B84F]">
         Đang tải...
       </section>
     );
@@ -40,7 +40,7 @@ function FeaturedSlider() {
 
   if (error) {
     return (
-      <section className="w-full h-full flex flex-col items-center justify-center py-10 text-[#A09890]">
+      <section className="w-full flex flex-col items-center justify-center py-10 text-[#E0B84F]">
         <p>Không thể tải slider sản phẩm.</p>
         <p className="text-xs mt-1">{error}</p>
       </section>
@@ -49,7 +49,7 @@ function FeaturedSlider() {
 
   if (!items.length) {
     return (
-      <section className="w-full h-full flex items-center justify-center py-10 text-[#A09890]">
+      <section className="w-full flex items-center justify-center py-10 text-[#E0B84F]">
         Không có sản phẩm nổi bật để hiển thị.
       </section>
     );
@@ -65,24 +65,27 @@ function FeaturedSlider() {
     : [items[0]];
 
   return (
-    <section className="w-full max-w-7xl mx-auto flex flex-col justify-center mt-24 mb-10 px-4">
-      <div className="mb-10 text-center">
-        <h2 className="mt-1 font-serif text-3xl sm:text-4xl font-black text-[#F5F0EB]">
+    <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-12">
+      <div className="mb-8 text-center">
+        <h2 className="font-['Noto_Serif'] text-3xl sm:text-4xl lg:text-5xl font-black text-[#F5F0EB] leading-tight">
           Sản phẩm nổi bật
         </h2>
-        <p className="mt-3 text-sm sm:text-base text-[#A09890]">
+
+        <p className="mt-3 text-sm sm:text-base text-[#E0B84F]">
           Bộ sưu tập nội thất WOODÉ được yêu thích nhất
         </p>
       </div>
 
       <div className="flex items-center justify-center gap-2 sm:gap-4 px-2 sm:px-4">
         <div className="relative w-full max-w-5xl">
-          <button
-            onClick={handlePrev}
-            className="absolute -left-4 sm:-left-12 top-1/2 -translate-y-1/2 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-[#2A2A2A] text-xl transition-all hover:scale-110 text-[#D4A574] hover:bg-[#8B6914] hover:text-[#1A1A1A] z-20 border border-[#3A3A3A]"
-          >
-            <FiChevronLeft size={24} />
-          </button>
+          {canSlide && (
+            <button
+              onClick={handlePrev}
+              className="absolute -left-4 sm:-left-12 top-1/2 -translate-y-1/2 z-20 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-[#1F1C18] text-xl text-[#E0B84F] border border-[#4A4035] transition-all hover:scale-110 hover:bg-[#D8A94A] hover:text-[#1A1A1A]"
+            >
+              <FiChevronLeft size={24} />
+            </button>
+          )}
 
           <div className="flex items-end justify-center gap-4 sm:gap-6">
             {displayItems.map((item, index) => (
@@ -110,12 +113,14 @@ function FeaturedSlider() {
             ))}
           </div>
 
-          <button
-            onClick={handleNext}
-            className="absolute -right-4 sm:-right-12 top-1/2 -translate-y-1/2 z-20 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-[#2A2A2A] text-xl transition-all hover:scale-110 text-[#D4A574] hover:bg-[#8B6914] hover:text-[#1A1A1A] border border-[#3A3A3A]"
-          >
-            <FiChevronRight size={24} />
-          </button>
+          {canSlide && (
+            <button
+              onClick={handleNext}
+              className="absolute -right-4 sm:-right-12 top-1/2 -translate-y-1/2 z-20 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-[#1F1C18] text-xl text-[#E0B84F] border border-[#4A4035] transition-all hover:scale-110 hover:bg-[#D8A94A] hover:text-[#1A1A1A]"
+            >
+              <FiChevronRight size={24} />
+            </button>
+          )}
         </div>
       </div>
 
@@ -126,8 +131,8 @@ function FeaturedSlider() {
             onClick={() => setActiveIndex(index)}
             className={`rounded-full transition-all duration-300 ${
               index === safeIndex
-                ? "h-2 w-8 bg-[#D4A574]"
-                : "h-2 w-2 bg-[#3A3A3A] hover:bg-[#6A6A6A]"
+                ? "h-2 w-8 bg-[#E0B84F]"
+                : "h-2 w-2 bg-[#4A4035] hover:bg-[#6A6A6A]"
             }`}
           />
         ))}

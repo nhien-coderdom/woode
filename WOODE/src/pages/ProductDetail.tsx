@@ -62,7 +62,7 @@ function ProductDetail() {
         <h1 className="mb-4 text-2xl font-bold">Không tìm thấy sản phẩm</h1>
         <button
           onClick={() => navigate("/")}
-          className="rounded-full bg-[#8B6914] px-6 py-3 font-semibold transition hover:bg-[#D4A574]"
+          className="rounded-full bg-[#D8A94A] px-6 py-3 font-semibold transition hover:bg-[#E0B84F]"
         >
           Quay về trang chủ
         </button>
@@ -72,47 +72,47 @@ function ProductDetail() {
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8 mt-20">
-      <section className="rounded-[36px] bg-[#1A1A1A] p-6 shadow-2xl sm:p-8 lg:p-10 border border-[#2A2A2A]">
+      <section className="rounded-[36px] bg-[#1A1A1A] p-6 shadow-2xl sm:p-8 lg:p-10 border border-[#1F1C18]">
         <div className="grid items-start gap-8 lg:grid-cols-[1fr_1fr]">
           
           {/* 3D Viewer / Image Left Side */}
-          <div className="relative h-[400px] w-full lg:h-[600px] rounded-[32px] overflow-hidden shadow-2xl border border-[#2A2A2A]">
+          <div className="relative h-[400px] w-full lg:h-[600px] rounded-[32px] overflow-hidden shadow-2xl border border-[#1F1C18]">
             <ProductViewer3D 
               modelUrl={product.modelUrl} 
               imageUrl={product.imageUrl} 
               alt={product.name}
             />
-            <div className="absolute left-5 top-5 rounded-full bg-[#8B6914]/90 backdrop-blur-sm px-4 py-2 text-sm font-semibold text-white shadow-md">
+            <div className="absolute left-5 top-5 rounded-full bg-[#D8A94A]/90 backdrop-blur-sm px-4 py-2 text-sm font-semibold text-white shadow-md">
               {product.category?.name || "Nội thất"}
             </div>
           </div>
 
           {/* Product Info Right Side */}
           <div className="flex flex-col text-[#F5F0EB]">
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#D4A574]">
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#E0B84F]">
               Chi tiết sản phẩm
             </p>
 
-            <h1 className="mt-3 font-serif text-3xl font-black leading-tight sm:text-4xl lg:text-5xl">
+            <h1 className="mt-3  font-['Noto_Serif'] text-3xl font-black leading-tight sm:text-4xl lg:text-5xl">
               {product.name}
             </h1>
 
-            <div className="mt-6 rounded-[24px] border border-[#3A3A3A] bg-[#2A2A2A] p-5">
-              <p className="text-sm leading-8 text-[#A09890] sm:text-base">
+            <div className="mt-6 rounded-[24px] border border-[#4A4035] bg-[#1F1C18] p-5">
+              <p className="text-sm leading-8 text-[#E0B84F] sm:text-base">
                 {product.description || "Sản phẩm nội thất cao cấp từ WOODÉ, mang lại sự sang trọng cho không gian sống của bạn."}
               </p>
               
               {(product.dimensions || product.weight) && (
-                <div className="mt-4 pt-4 border-t border-[#3A3A3A] grid grid-cols-2 gap-4 text-sm">
+                <div className="mt-4 pt-4 border-t border-[#4A4035] grid grid-cols-2 gap-4 text-sm">
                   {product.dimensions && (
                     <div>
-                      <span className="text-[#A09890] block text-xs uppercase mb-1">Kích thước</span>
+                      <span className="text-[#E0B84F] block text-xs uppercase mb-1">Kích thước</span>
                       <span className="font-semibold">{product.dimensions}</span>
                     </div>
                   )}
                   {product.weight && (
                     <div>
-                      <span className="text-[#A09890] block text-xs uppercase mb-1">Cân nặng</span>
+                      <span className="text-[#E0B84F] block text-xs uppercase mb-1">Cân nặng</span>
                       <span className="font-semibold">{product.weight} kg</span>
                     </div>
                   )}
@@ -120,16 +120,16 @@ function ProductDetail() {
               )}
             </div>
 
-            <div className="mt-6 flex items-end justify-between gap-4 border-b border-[#3A3A3A] pb-6">
+            <div className="mt-6 flex items-end justify-between gap-4 border-b border-[#4A4035] pb-6">
               <div>
-                <p className="text-xs uppercase tracking-[0.2em] text-[#A09890]">Giá sản phẩm</p>
-                <p className="mt-2 text-3xl font-bold text-[#D4A574] sm:text-4xl">
+                <p className="text-xs uppercase tracking-[0.2em] text-[#E0B84F]">Giá sản phẩm</p>
+                <p className="mt-2 text-3xl font-bold text-[#E0B84F] sm:text-4xl">
                   {formatPrice(product.price)}
                 </p>
               </div>
 
-              <div className="rounded-2xl bg-[#2A2A2A] px-4 py-3 text-right border border-[#3A3A3A]">
-                <p className="text-xs uppercase tracking-wide text-[#A09890]">Danh mục</p>
+              <div className="rounded-2xl bg-[#1F1C18] px-4 py-3 text-right border border-[#4A4035]">
+                <p className="text-xs uppercase tracking-wide text-[#E0B84F]">Danh mục</p>
                 <p className="mt-1 font-bold text-[#F5F0EB]">{product.category?.name || "N/A"}</p>
               </div>
             </div>
@@ -137,25 +137,25 @@ function ProductDetail() {
             <div className="mt-8 grid gap-4 sm:grid-cols-[auto_1fr]">
               <div>
                 <p className="mb-3 text-sm font-semibold text-[#F5F0EB]">Số lượng</p>
-                <div className="flex items-center gap-2 rounded-full border border-[#3A3A3A] bg-[#2A2A2A] px-4 py-3">
+                <div className="flex items-center gap-2 rounded-full border border-[#4A4035] bg-[#1F1C18] px-4 py-3">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="flex h-6 w-6 items-center justify-center text-[#A09890] transition hover:text-[#D4A574]"
+                    className="flex h-6 w-6 items-center justify-center text-[#E0B84F] transition hover:text-[#E0B84F]"
                   >
                     <FiMinus size={18} />
                   </button>
                   <span className="w-6 text-center font-semibold text-[#F5F0EB]">{quantity}</span>
                   <button
                     onClick={() => setQuantity(quantity + 1)}
-                    className="flex h-6 w-6 items-center justify-center text-[#A09890] transition hover:text-[#D4A574]"
+                    className="flex h-6 w-6 items-center justify-center text-[#E0B84F] transition hover:text-[#E0B84F]"
                   >
                     <FiPlus size={18} />
                   </button>
                 </div>
               </div>
 
-              <div className="rounded-[24px] border border-[#3A3A3A] bg-[#2A2A2A] p-5">
-                <div className="space-y-2 text-sm text-[#A09890]">
+              <div className="rounded-[24px] border border-[#4A4035] bg-[#1F1C18] p-5">
+                <div className="space-y-2 text-sm text-[#E0B84F]">
                   <div className="flex justify-between">
                     <span>
                       {product.name} x {quantity}
@@ -164,9 +164,9 @@ function ProductDetail() {
                   </div>
                 </div>
 
-                <div className="mt-4 flex items-center justify-between border-t border-[#3A3A3A] pt-4">
+                <div className="mt-4 flex items-center justify-between border-t border-[#4A4035] pt-4">
                   <span className="text-base font-semibold text-[#F5F0EB]">Tổng cộng</span>
-                  <span className="text-2xl font-bold text-[#D4A574]">{formatPrice(totalPrice)}</span>
+                  <span className="text-2xl font-bold text-[#E0B84F]">{formatPrice(totalPrice)}</span>
                 </div>
               </div>
             </div>
@@ -174,7 +174,7 @@ function ProductDetail() {
             <div className="mt-8 flex flex-wrap gap-3">
               <button
                 onClick={handleAddToCart}
-                className="relative flex-1 rounded-full bg-gradient-to-r from-[#8B6914] to-[#D4A574] px-6 py-4 text-sm font-bold text-[#1A1A1A] shadow-md transition-all hover:scale-[1.02] hover:shadow-lg"
+                className="relative flex-1 rounded-full bg-gradient-to-r from-[#D8A94A] to-[#E0B84F] px-6 py-4 text-sm font-bold text-[#1A1A1A] shadow-md transition-all hover:scale-[1.02] hover:shadow-lg"
               >
                 <span className="inline-flex items-center justify-center gap-2">
                   <FiShoppingCart size={18} />
@@ -182,7 +182,7 @@ function ProductDetail() {
                 </span>
 
                 {showAddedMessage && (
-                  <div className="absolute inset-0 flex items-center justify-center rounded-full bg-[#4A7C59]">
+                  <div className="absolute inset-0 flex items-center justify-center rounded-full bg-[#E0B84F]">
                     <div className="flex items-center gap-2 text-white">
                       <FiCheck size={18} />
                       Đã thêm
@@ -193,7 +193,7 @@ function ProductDetail() {
 
               <button
                 onClick={() => navigate("/cart")}
-                className="flex-1 rounded-full border border-[#3A3A3A] bg-[#2A2A2A] px-6 py-4 text-sm font-bold text-[#F5F0EB] transition-all hover:bg-[#3A3A3A]"
+                className="flex-1 rounded-full border border-[#4A4035] bg-[#1F1C18] px-6 py-4 text-sm font-bold text-[#F5F0EB] transition-all hover:bg-[#4A4035]"
               >
                 Kiểm tra giỏ hàng
               </button>
@@ -203,8 +203,8 @@ function ProductDetail() {
       </section>
 
       {relatedProducts.length > 0 && (
-        <section className="mt-16 pt-12 border-t border-[#2A2A2A]">
-          <h2 className="mb-8 font-serif text-3xl font-black text-[#F5F0EB] sm:text-4xl text-center">
+        <section className="mt-16 pt-12 border-t border-[#1F1C18]">
+          <h2 className="mb-8  font-['Noto_Serif'] text-3xl font-black text-[#F5F0EB] sm:text-4xl text-center">
             Sản phẩm liên quan
           </h2>
 

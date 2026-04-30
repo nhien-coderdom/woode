@@ -17,6 +17,7 @@ import Contact from "./pages/info/Contact";
 import PurchasePolicy from "./pages/info/PurchasePolicy";
 import PrivacyPolicy from "./pages/info/PrivacyPolicy";
 import Terms from "./pages/info/Terms";
+import FloatingCartBox from "./components/FloatingCartBox";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
         <Route path="/checkout/success" element={<PaymentSuccess />} />
         <Route path="/checkout/failed" element={<PaymentFailed />} />
       </Routes>
+      <FloatingCartBox />
     </BrowserRouter>
   );
 }

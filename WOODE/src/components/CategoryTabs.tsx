@@ -48,10 +48,10 @@ function CategoryTabs() {
                 : navigate(`/products/${cat.slug}`)
             }
             className={`transition relative pb-1 ${
-              // nếu active thì chữ màu cam
+              // nếu active thì chữ màu vàng
               // nếu không active thì chữ màu xám, hover đậm hơn
               isActive
-                ? "text-orange-400"
+                ? "text-[#D4AF37]"
                 : "text-neutral-600 hover:text-neutral-900"
             }`}
           >
@@ -60,7 +60,7 @@ function CategoryTabs() {
 
             {/* nếu tab đang active thì hiện gạch chân màu cam */}
             {isActive && (
-              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#6c935b] rounded-full" />
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#D4AF37] rounded-full" />
             )}
           </button>
         );

@@ -34,7 +34,7 @@ export const RegisterForm = ({
         placeholder="Họ tên"
         className="w-full border p-2"
       />
-      {errors.fullName && <p className="text-red-500">{errors.fullName}</p>}
+      {errors.fullName && <p className="text-[#D4AF37]">{errors.fullName}</p>}
 
       {/* EMAIL */}
       <input
@@ -53,7 +53,7 @@ export const RegisterForm = ({
         placeholder="SĐT"
         className="w-full border p-2"
       />
-      {errors.phone && <p className="text-red-500">{errors.phone}</p>}
+      {errors.phone && <p className="text-[#D4AF37]">{errors.phone}</p>}
 
       {/* ADDRESS */}
       <input
@@ -68,7 +68,7 @@ export const RegisterForm = ({
       <button
         type="submit"
         disabled={isLoading}
-        className="w-full bg-orange-400 text-white py-2"
+        className="w-full bg-[#8B6F47] text-white py-2 hover:bg-[#D4AF37] hover:text-[#1A1A1A] transition-all"
       >
         {isLoading ? 'Đang gửi OTP...' : 'Gửi OTP'}
       </button>

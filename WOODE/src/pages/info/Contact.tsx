@@ -4,7 +4,7 @@ export default function Contact() {
   return (
     <div className="max-w-6xl mx-auto py-12 px-6 mt-20">
       <div className="text-center mb-16">
-        <h1 className="text-4xl font-black text-[#086136] mb-4">Liên hệ với MAY</h1>
+        <h1 className="text-4xl font-black text-[#8B6F47] mb-4">Liên hệ với WOODE</h1>
         <p className="text-neutral-600">Chúng tôi luôn sẵn sàng lắng nghe mọi phản hồi và đóng góp từ bạn.</p>
       </div>
 
@@ -15,7 +15,7 @@ export default function Contact() {
             <h3 className="text-xl font-bold mb-6 text-neutral-800">Thông tin liên hệ</h3>
             <div className="space-y-6">
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-orange-100 text-orange-600 rounded-lg flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 bg-[#F5E6D3] text-[#8B6F47] rounded-lg flex items-center justify-center shrink-0">
                   <FiMapPin />
                 </div>
                 <div>
@@ -35,12 +35,12 @@ export default function Contact() {
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-[#6c935b]/10 text-[#6c935b] rounded-lg flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 bg-[#8B6F47]/10 text-[#8B6F47] rounded-lg flex items-center justify-center shrink-0">
                   <FiMail />
                 </div>
                 <div>
                   <p className="font-bold text-sm">Email</p>
-                  <p className="text-neutral-500 text-sm">hello@maycoffee.vn</p>
+                  <p className="text-neutral-500 text-sm">hello@Woodé.vn</p>
                 </div>
               </div>
             </div>
@@ -62,25 +62,25 @@ export default function Contact() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label className="text-xs font-bold text-neutral-500 uppercase">Họ và tên</label>
-                <input type="text" placeholder="Nguyễn Văn A" className="w-full px-4 py-3 rounded-xl bg-neutral-50 border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-[#6c935b]/20" />
+                <input type="text" placeholder="Nguyễn Văn A" className="w-full px-4 py-3 rounded-xl bg-neutral-50 border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-[#8B6F47]/20" />
               </div>
               <div className="space-y-2">
                 <label className="text-xs font-bold text-neutral-500 uppercase">Số điện thoại</label>
-                <input type="tel" placeholder="0901234567" className="w-full px-4 py-3 rounded-xl bg-neutral-50 border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-[#6c935b]/20" />
+                <input type="tel" placeholder="0901234567" className="w-full px-4 py-3 rounded-xl bg-neutral-50 border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-[#8B6F47]/20" />
               </div>
             </div>
 
             <div className="space-y-2">
               <label className="text-xs font-bold text-neutral-500 uppercase">Email</label>
-              <input type="email" placeholder="example@gmail.com" className="w-full px-4 py-3 rounded-xl bg-neutral-50 border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-[#6c935b]/20" />
+              <input type="email" placeholder="example@gmail.com" className="w-full px-4 py-3 rounded-xl bg-neutral-50 border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-[#8B6F47]/20" />
             </div>
 
             <div className="space-y-2">
               <label className="text-xs font-bold text-neutral-500 uppercase">Nội dung</label>
-              <textarea rows={4} placeholder="Bạn muốn nhắn gì cho MAY?" className="w-full px-4 py-3 rounded-xl bg-neutral-50 border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-[#6c935b]/20" />
+              <textarea rows={4} placeholder="Bạn muốn nhắn gì cho WOODE?" className="w-full px-4 py-3 rounded-xl bg-neutral-50 border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-[#8B6F47]/20" />
             </div>
 
-            <button type="submit" className="w-full py-4 bg-[#6c935b] text-white rounded-xl font-bold shadow-md hover:bg-[#5b7d4c] transition flex items-center justify-center gap-2">
+            <button type="submit" className="w-full py-4 bg-[#8B6F47] text-white rounded-xl font-bold shadow-md hover:bg-[#D4AF37] hover:text-[#1A1A1A] transition flex items-center justify-center gap-2">
               <FiSend /> Gửi tin nhắn
             </button>
           </form>

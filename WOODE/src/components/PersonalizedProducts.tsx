@@ -53,9 +53,9 @@ export default function PersonalizedProducts() {
   if (!data || data.favorites.length === 0) return null;
 
   return (
-    <div className="w-full mb-12 mt-12 border-t border-[#3A3A3A] pt-10">
+    <div className="w-full mb-12 mt-12 border-t border-[#4A4035] pt-10">
       <div className="flex items-center justify-between mb-8">
-        <h3 className="text-2xl sm:text-3xl font-serif font-bold text-[#F5F0EB]">
+        <h3 className="text-2xl sm:text-3xl  font-['Noto_Serif'] font-bold text-[#F5F0EB]">
           Gợi ý dành riêng cho bạn
         </h3>
       </div>

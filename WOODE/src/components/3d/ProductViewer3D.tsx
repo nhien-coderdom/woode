@@ -56,7 +56,7 @@ export function ProductViewer3D({ modelUrl, imageUrl, alt, className = '' }: Pro
         />
       </Canvas>
       <div className="absolute bottom-4 left-0 w-full text-center pointer-events-none">
-        <span className="bg-[#2A2A2A]/80 text-[#D4A574] text-xs px-3 py-1.5 rounded-full backdrop-blur-sm border border-[#3A3A3A]">
+        <span className="bg-[#1F1C18]/80 text-[#E0B84F] text-xs px-3 py-1.5 rounded-full backdrop-blur-sm border border-[#4A4035]">
           Tương tác 3D: Kéo để xoay, Cuộn để zoom
         </span>
       </div>

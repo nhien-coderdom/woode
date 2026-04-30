@@ -84,7 +84,7 @@ const getStatusCardStyle = (status: OrderStatus) => {
 
         <div className="text-right">
           <p className="text-xs text-neutral-400">Tổng</p>
-          <p className="font-bold text-[#086136]">
+          <p className="font-bold text-[#D4AF37]">
             {formatPrice(order.total)}
           </p>
         </div>

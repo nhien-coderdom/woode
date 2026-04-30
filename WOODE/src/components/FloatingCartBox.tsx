@@ -1,17 +1,22 @@
 import { FiShoppingCart } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
-import { useCart } from ".././contexts/CartContext";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useCart } from "../contexts/CartContext";
 
 export default function FloatingCartBox() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { cart, getTotalPrice } = useCart();
 
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
   const totalPrice = getTotalPrice();
 
+  const isProductPage =
+    location.pathname.startsWith("/products") ||
+    location.pathname.startsWith("/product/");
+
+  if (!isProductPage) return null;
   if (cart.length === 0) return null;
-  if (location.pathname === "/cart") return null;
-  if (location.pathname === "/checkout") return null;
+
   return (
     <button
       onClick={() => navigate("/cart")}

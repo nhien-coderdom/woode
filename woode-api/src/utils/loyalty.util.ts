@@ -1,29 +1,37 @@
-export function calculateLoyaltyTier(
-  totalSpent: number,
-): 'NORMAL' | 'SILVER' | 'GOLD' | 'PLATINUM' {
-  if (totalSpent >= 200000000) return 'PLATINUM';
-  if (totalSpent >= 50000000) return 'GOLD';
-  if (totalSpent >= 10000000) return 'SILVER';
-  return 'NORMAL';
+import {
+  calculateLoyaltyTier,
+  getDiscountPercentageBySpent,
+  getMonthlyResetDate,
+  LOYALTY_POINTS_MULTIPLIER,
+} from '../config/tiers.constants.js';
+
+// Re-export for backward compatibility
+export {
+  calculateLoyaltyTier,
+  getMonthlyResetDate,
+  LOYALTY_POINTS_MULTIPLIER as POINTS_MULTIPLIER,
+};
+
+/**
+ * Calculate earned loyalty points from final total amount paid
+ * @param finalAmount Final amount customer actually paid (after usedPoint and tierDiscount)
+ * @returns Earned points (10% of final amount paid)
+ * 
+ * Points are calculated from the actual amount paid:
+ * finalAmount = subtotal - usedPoint - tierDiscount
+ * earnedPoints = 10% of finalAmount
+ * 
+ * Points are only added to user when order status = COMPLETED
+ */
+export function calculateEarnedPoints(finalAmount: number): number {
+  return Math.floor(finalAmount * LOYALTY_POINTS_MULTIPLIER);
 }
 
-export function calculateEarnedPoints(total: number): number {
-  // 10% giá hóa đơn thành điểm
-  return Math.floor(total * 0.1);
-}
-
-export function getDiscountPercentageByTier(
-  totalSpent: number,
-): number {
-  // PLATINUM: giảm 10%
-  if (totalSpent >= 200000000) return 0.1;
-  // GOLD: giảm 5%
-  if (totalSpent >= 50000000) return 0.05;
-  // SILVER, NORMAL: không giảm
-  return 0;
-}
-
-export function getMonthlyResetDate(): Date {
-  const now = new Date();
-  return new Date(now.getFullYear(), now.getMonth() + 1, 1, 0, 0, 0);
+/**
+ * Get discount percentage for a spent amount (legacy function name)
+ * @param totalSpent Total spent amount
+ * @returns Discount percentage as decimal (e.g., 0.05 for 5%)
+ */
+export function getDiscountPercentageByTier(totalSpent: number): number {
+  return getDiscountPercentageBySpent(totalSpent);
 }

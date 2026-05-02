@@ -11,6 +11,94 @@ export class UsersService {
   constructor(
     private prisma: PrismaService
   ) { }
+
+  /**
+   * Calculate total spent from only COMPLETED orders
+   */
+  private async getCompletedOrdersTotal(userId: number): Promise<number> {
+    const result = await this.prisma.order.aggregate({
+      _sum: {
+        total: true,
+      },
+      where: {
+        userId,
+        status: 'COMPLETED',
+        isDeleted: false,
+      },
+    });
+
+    return result._sum.total || 0;
+  }
+
+  /**
+   * Count completed orders for a user
+   */
+  private async getCompletedOrdersCount(userId: number): Promise<number> {
+    return this.prisma.order.count({
+      where: {
+        userId,
+        status: 'COMPLETED',
+        isDeleted: false,
+      },
+    });
+  }
+
+  /**
+   * Calculate loyalty points from order history
+   * Logic:
+   * - COMPLETED: +earnedPoint -usedPoint
+   * - CANCELLED: +usedPoint (hoàn lại)
+   * - PENDING/CONFIRMED/SHIPPING: Không tính
+   */
+  private async getCalculatedLoyaltyPoints(userId: number): Promise<number> {
+  const orders = await this.prisma.order.findMany({
+    where: {
+      userId,
+      isDeleted: false,
+    },
+    select: {
+      status: true,
+      usedPoint: true,
+      earnedPoint: true,
+    },
+  });
+
+  let loyaltyPoints = 0;
+
+  for (const order of orders) {
+    const usedPoint = order.usedPoint || 0;
+    const earnedPoint = order.earnedPoint || 0;
+
+    /**
+     * Logic tính điểm:
+     *
+     * 1. Đơn COMPLETED:
+     *    - Cộng điểm tích lũy earnedPoint
+     *    - Trừ điểm đã dùng usedPoint
+     *
+     * 2. Đơn CANCELLED:
+     *    - Không cộng earnedPoint
+     *    - Không trừ usedPoint
+     *    Vì đơn hủy thì điểm đã dùng coi như được hoàn lại
+     *
+     * 3. Đơn đang xử lý / pending / shipping:
+     *    - Trừ usedPoint vì điểm đã được dùng khi đặt hàng
+     *    - Chưa cộng earnedPoint vì đơn chưa hoàn thành
+     */
+
+    if (order.status === 'COMPLETED') {
+      loyaltyPoints += earnedPoint;
+      loyaltyPoints -= usedPoint;
+    } else if (order.status === 'CANCELLED') {
+      continue;
+    } else {
+      loyaltyPoints -= usedPoint;
+    }
+  }
+
+  return Math.max(0, loyaltyPoints);
+}
+
   async findAll(showDeleted: boolean = false) {
     // Admin: show all users (include deleted if requested)
     const where = showDeleted ? {} : { isDeleted: false };
@@ -38,7 +126,6 @@ export class UsersService {
   }
 
   async getMyProfile(userId: number) {
-
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
       select: {
@@ -48,8 +135,6 @@ export class UsersService {
         phone: true,
         role: true,
         loyaltyPoint: true,
-        totalOrders: true,
-        totalSpent: true,
         createdAt: true,
       },
     });
@@ -58,12 +143,30 @@ export class UsersService {
       throw new Error('User not found');
     }
 
-    return user;
+    // Calculate actual values from completed orders only
+    const totalSpentFromCompleted = await this.getCompletedOrdersTotal(userId);
+    const totalOrdersCompleted = await this.getCompletedOrdersCount(userId);
+    const calculatedLoyaltyPoints = await this.getCalculatedLoyaltyPoints(userId);
+
+    // Update database if calculated points differ from stored points
+    if (calculatedLoyaltyPoints !== user.loyaltyPoint) {
+      await this.prisma.user.update({
+        where: { id: userId },
+        data: {
+          loyaltyPoint: calculatedLoyaltyPoints,
+        },
+      });
+    }
+
+    return {
+      ...user,
+      totalOrders: totalOrdersCompleted,
+      totalSpent: totalSpentFromCompleted,
+      loyaltyPoint: calculatedLoyaltyPoints,
+    };
   }
 
   async getProfile(userId: number) {
-
-
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
       select: {
@@ -73,16 +176,35 @@ export class UsersService {
         phone: true,
         role: true,
         loyaltyPoint: true,
-        totalOrders: true,
-        totalSpent: true,
         createdAt: true,
-      }
-    })
+      },
+    });
 
     if (!user) {
       throw new Error('User not found');
     }
-    return user;
+
+    // Calculate actual values from completed orders only
+    const totalSpentFromCompleted = await this.getCompletedOrdersTotal(userId);
+    const totalOrdersCompleted = await this.getCompletedOrdersCount(userId);
+    const calculatedLoyaltyPoints = await this.getCalculatedLoyaltyPoints(userId);
+
+    // Update database if calculated points differ from stored points
+    if (calculatedLoyaltyPoints !== user.loyaltyPoint) {
+      await this.prisma.user.update({
+        where: { id: userId },
+        data: {
+          loyaltyPoint: calculatedLoyaltyPoints,
+        },
+      });
+    }
+
+    return {
+      ...user,
+      totalOrders: totalOrdersCompleted,
+      totalSpent: totalSpentFromCompleted,
+      loyaltyPoint: calculatedLoyaltyPoints,
+    };
   }
 
   async create(dto: CreateUserDto) {
@@ -244,7 +366,7 @@ export class UsersService {
       throw new NotFoundException('User not found');
     }
 
-    const earnedPoints = Math.floor(orderAmount / 1000); // 1 point for every 1000 VND spent
+    const earnedPoints = Math.floor(orderAmount / 10); // 10% of final amount paid (after all discounts)
 
     return this.prisma.user.update({
       where: { id: userId },
@@ -279,7 +401,7 @@ export class UsersService {
       throw new BadRequestException('Points must be greater than 0');
     }
 
-    const discount = points * 100; // 1 point = 100 VND discount
+    const discount = points * 1; // 1 point = 1 VND discount
 
     const updatedUser = await this.prisma.user.update({
       where: { id: userId },

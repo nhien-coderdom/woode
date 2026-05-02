@@ -74,4 +74,15 @@ export class AuthController {
   refresh(@Body('refreshToken') token: string) {
     return this.authService.refresh(token);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('debug/loyalty-points')
+  async debugLoyaltyPoints(@Req() req: any) {
+    return this.authService.debugLoyaltyPoints(req.user.sub);
+  }
+
+  @Post('admin/fix-earned-points')
+  async fixAllEarnedPoints() {
+    return this.authService.fixAllEarnedPoints();
+  }
 }

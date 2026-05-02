@@ -54,9 +54,9 @@ async function main() {
       phoneVerified: true,
       address: "Bình Thạnh, TP.HCM",
       role: UserRole.CUSTOMER,
-      loyaltyPoint: 500,
-      totalOrders: 8,
-      totalSpent: 45000000,
+      loyaltyPoint: 37400000,
+      totalOrders: 4,
+      totalSpent: 37400000,
     },
   })
 

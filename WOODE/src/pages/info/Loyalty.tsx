@@ -17,7 +17,7 @@ export default function Loyalty() {
   const userData = user ? {
     totalSpent: user.totalSpent || 0,
     totalOrders: user.totalOrders || 0,
-    loyaltyPoint: user.loyaltyPoint || 0,
+    loyaltyPoint: Math.floor((user.totalSpent || 0) * 0.1),
   } : {
     totalSpent: 0,
     totalOrders: 0,
@@ -109,7 +109,7 @@ export default function Loyalty() {
               <div className="bg-purple-50 rounded-lg p-3">
                 <p className="text-xs text-[#6F5A3A] font-medium">Điểm</p>
                 <p className="font-bold text-lg text-[#A87822] mt-1">
-                  {userData.loyaltyPoint || 0}
+                  {(userData.loyaltyPoint || 0).toLocaleString()}
                 </p>
               </div>
             </div>
@@ -134,7 +134,7 @@ export default function Loyalty() {
             <p className="text-sm mt-1 text-[#2A1E13]">
               💰{" "}
               <span className="font-bold text-[#A87822]">
-                1.000 điểm = 1.000 vnđ
+                10% tiền thanh toán = điểm nhận
               </span>
             </p>
           </div>
@@ -168,8 +168,8 @@ export default function Loyalty() {
             <p className="font-semibold mb-1 text-[#2A1E13]">Quyền lợi</p>
 
             <ul className="text-sm text-[#6F5A3A] space-y-1">
-              <li>💰 Tích điểm từ mỗi đơn hàng (10% giá gốc, trước discount)</li>
-              <li>🎁 Dùng điểm để giảm giá (1.000 điểm = 1.000đ)</li>
+              <li>💰 Tích điểm từ mỗi đơn hàng (10% tiền thanh toán sau giảm)</li>
+              <li>🎁 Dùng điểm để giảm giá (1000 điểm = 1000 VNĐ)</li>
               <li>📈 VÀNG: giảm 5% cho mỗi đơn</li>
               <li>👑 BẠCH KIM: giảm 10% cho mỗi đơn</li>
             </ul>
@@ -177,7 +177,7 @@ export default function Loyalty() {
 
           {/* ===== LƯU Ý ===== */}
           <div className="text-xs text-[#6F5A3A] mb-4 text-center">
-            * Giảm giá theo hạng được tính trên tổng tiền hóa đơn (trước khi dùng điểm)</div>
+            * Giảm giá theo hạng được tính trên tổng tiền hóa đơn (trước khi dùng điểm). Điểm chỉ được cộng khi đơn hàng hoàn thành.</div>
 
 
           {/* BUTTON */}

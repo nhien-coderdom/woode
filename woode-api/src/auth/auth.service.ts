@@ -19,6 +19,79 @@ export class AuthService {
     private jwtService: JwtService,
   ) { }
 
+  /**
+   * Calculate total spent from only COMPLETED orders
+   */
+  private async getCompletedOrdersTotal(userId: number): Promise<number> {
+    const result = await this.prisma.order.aggregate({
+      _sum: {
+        total: true,
+      },
+      where: {
+        userId,
+        status: 'COMPLETED',
+        isDeleted: false,
+      },
+    });
+
+    return result._sum.total || 0;
+  }
+
+  /**
+   * Count completed orders for a user
+   */
+  private async getCompletedOrdersCount(userId: number): Promise<number> {
+    return this.prisma.order.count({
+      where: {
+        userId,
+        status: 'COMPLETED',
+        isDeleted: false,
+      },
+    });
+  }
+
+  /**
+   * Calculate loyalty points from order history
+   * Logic:
+   * - COMPLETED: +earnedPoint -usedPoint (tích lũy được trừ đã dùng)
+   * - CANCELLED: không tính (điểm đã được hoàn lại khi cancel)
+   * - PENDING/CONFIRMED/SHIPPING: -usedPoint (trừ điểm đã dùng, chưa nhận tích lũy)
+   */
+  private async getCalculatedLoyaltyPoints(userId: number): Promise<number> {
+    const orders = await this.prisma.order.findMany({
+      where: {
+        userId,
+        isDeleted: false,
+      },
+      select: {
+        status: true,
+        usedPoint: true,
+        earnedPoint: true,
+      },
+    });
+
+    let loyaltyPoints = 0;
+
+    for (const order of orders) {
+      const usedPoint = order.usedPoint || 0;
+      const earnedPoint = order.earnedPoint || 0;
+
+      if (order.status === 'COMPLETED') {
+        // COMPLETED: +earnedPoint (tích lũy được) -usedPoint (đã dùng)
+        loyaltyPoints += earnedPoint;
+        loyaltyPoints -= usedPoint;
+      } else if (order.status === 'CANCELLED') {
+        // CANCELLED: không tính gì (điểm đã được hoàn lại khi order hủy)
+        continue;
+      } else {
+        // PENDING/CONFIRMED/SHIPPING: -usedPoint (trừ điểm đã dùng)
+        loyaltyPoints -= usedPoint;
+      }
+    }
+
+    return Math.max(0, loyaltyPoints); // Never go below 0
+  }
+
   // ================= CHECK PHONE =================
   async checkPhone(phone: string) {
     const normalizedPhone = phone.replace('+84', '0');
@@ -44,6 +117,21 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
+    // Calculate actual spent from completed orders only
+    const totalSpentFromCompleted = await this.getCompletedOrdersTotal(user.id);
+    const totalOrdersCompleted = await this.getCompletedOrdersCount(user.id);
+    const calculatedLoyaltyPoints = await this.getCalculatedLoyaltyPoints(user.id);
+
+    // Update database if calculated points differ from stored points
+    if (calculatedLoyaltyPoints !== user.loyaltyPoint) {
+      await this.prisma.user.update({
+        where: { id: user.id },
+        data: {
+          loyaltyPoint: calculatedLoyaltyPoints,
+        },
+      });
+    }
+
     const payload = {
       sub: user.id,
       email: user.email,
@@ -59,10 +147,10 @@ export class AuthService {
         phone: user.phone,
         address: user.address,
         createdAt: user.createdAt,
-        loyaltyPoint: user.loyaltyPoint,
-        loyaltyTier: calculateLoyaltyTier(user.totalSpent),
-        totalOrders: user.totalOrders,
-        totalSpent: user.totalSpent,
+        loyaltyPoint: calculatedLoyaltyPoints,
+        loyaltyTier: calculateLoyaltyTier(totalSpentFromCompleted),
+        totalOrders: totalOrdersCompleted,
+        totalSpent: totalSpentFromCompleted,
       },
       access_token: this.jwtService.sign(payload, { expiresIn: '15m' }),
       refresh_token: this.jwtService.sign(payload, {
@@ -145,9 +233,29 @@ export class AuthService {
 
     if (!user) return null;
 
+    // Calculate actual spent from completed orders only
+    const totalSpentFromCompleted = await this.getCompletedOrdersTotal(userId);
+    const totalOrdersCompleted = await this.getCompletedOrdersCount(userId);
+    
+    // Calculate actual loyalty points from order history
+    const calculatedLoyaltyPoints = await this.getCalculatedLoyaltyPoints(userId);
+
+    // Update database if calculated points differ from stored points
+    if (calculatedLoyaltyPoints !== user.loyaltyPoint) {
+      await this.prisma.user.update({
+        where: { id: userId },
+        data: {
+          loyaltyPoint: calculatedLoyaltyPoints,
+        },
+      });
+    }
+
     return {
       ...user,
-      loyaltyTier: calculateLoyaltyTier(user.totalSpent),
+      totalOrders: totalOrdersCompleted,
+      totalSpent: totalSpentFromCompleted,
+      loyaltyTier: calculateLoyaltyTier(totalSpentFromCompleted),
+      loyaltyPoint: calculatedLoyaltyPoints,
     };
   }
 
@@ -179,13 +287,18 @@ export class AuthService {
           address: true,
           createdAt: true,
           loyaltyPoint: true,
-          totalOrders: true,
-          totalSpent: true,
         },
       });
+
+      // Calculate actual spent from completed orders only
+      const totalSpentFromCompleted = await this.getCompletedOrdersTotal(userId);
+      const totalOrdersCompleted = await this.getCompletedOrdersCount(userId);
+
       return {
         ...updatedUser,
-        loyaltyTier: calculateLoyaltyTier(updatedUser.totalSpent),
+        totalOrders: totalOrdersCompleted,
+        totalSpent: totalSpentFromCompleted,
+        loyaltyTier: calculateLoyaltyTier(totalSpentFromCompleted),
       };
     }
     catch (error: any) {
@@ -277,4 +390,124 @@ export class AuthService {
     access_token: this.jwtService.sign(payload),
   };
 }
+
+  /**
+   * Debug method to see loyalty points calculation
+   */
+  async debugLoyaltyPoints(userId: number) {
+    const orders = await this.prisma.order.findMany({
+      where: {
+        userId,
+        isDeleted: false,
+      },
+      select: {
+        id: true,
+        status: true,
+        usedPoint: true,
+        earnedPoint: true,
+      },
+    });
+
+    let totalLoyaltyPoints = 0;
+    const breakdown: any[] = [];
+
+    for (const order of orders) {
+      let orderContribution = 0;
+      
+      if (order.status === 'COMPLETED') {
+        orderContribution = order.earnedPoint - order.usedPoint;
+        breakdown.push({
+          orderId: order.id,
+          status: order.status,
+          earnedPoint: order.earnedPoint,
+          usedPoint: order.usedPoint,
+          contribution: orderContribution,
+          reason: `COMPLETED: +${order.earnedPoint} -${order.usedPoint}`,
+        });
+      } else if (order.status === 'CANCELLED') {
+        orderContribution = order.usedPoint;
+        breakdown.push({
+          orderId: order.id,
+          status: order.status,
+          usedPoint: order.usedPoint,
+          contribution: orderContribution,
+          reason: `CANCELLED: +${order.usedPoint} (hoàn lại)`,
+        });
+      } else {
+        breakdown.push({
+          orderId: order.id,
+          status: order.status,
+          earnedPoint: order.earnedPoint,
+          usedPoint: order.usedPoint,
+          contribution: 0,
+          reason: `${order.status}: Không tính`,
+        });
+      }
+
+      totalLoyaltyPoints += orderContribution;
+    }
+
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        loyaltyPoint: true,
+      },
+    });
+
+    return {
+      userId,
+      userStoredLoyaltyPoint: user?.loyaltyPoint,
+      calculatedLoyaltyPoints: Math.max(0, totalLoyaltyPoints),
+      totalOrders: orders.length,
+      breakdown,
+    };
+  }
+
+  /**
+   * Admin function to recalculate earnedPoint for all orders
+   * Should only be called once to fix historical data
+   */
+  async fixAllEarnedPoints() {
+    const orders = await this.prisma.order.findMany({
+      where: { isDeleted: false },
+      include: {
+        items: true,
+      },
+    });
+
+    let fixed = 0;
+    let skipped = 0;
+    const results: any[] = [];
+
+    for (const order of orders) {
+      // Calculate correct earnedPoint from final amount paid (after all discounts)
+      const correctEarnedPoint = Math.floor(order.total * 0.1);
+
+      if (order.earnedPoint !== correctEarnedPoint) {
+        await this.prisma.order.update({
+          where: { id: order.id },
+          data: { earnedPoint: correctEarnedPoint },
+        });
+        
+        fixed++;
+        results.push({
+          orderId: order.id,
+          oldEarnedPoint: order.earnedPoint,
+          newEarnedPoint: correctEarnedPoint,
+          finalAmount: order.total,
+          status: 'FIXED',
+        });
+      } else {
+        skipped++;
+      }
+    }
+
+    return {
+      message: 'Fix completed',
+      totalOrders: orders.length,
+      fixed,
+      skipped,
+      results: results.slice(0, 10), // Show first 10 changes
+    };
+  }
 }

@@ -7,7 +7,7 @@ import { OrderStatus, PaymentMethod } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { CreateOrderDto } from './dto/create-orders.dto.js';
 import { OrdersGateway } from './orders.gateway.js';
-import { calculateEarnedPoints, getDiscountPercentageByTier } from '../utils/loyalty.util.js';
+import { getDiscountPercentageByTier } from '../utils/loyalty.util.js';
 
 @Injectable()
 export class OrdersService {
@@ -15,6 +15,24 @@ export class OrdersService {
     private readonly prisma: PrismaService,
     private readonly ordersGateway: OrdersGateway,
   ) {}
+
+  /**
+   * Calculate user's loyalty tier from only COMPLETED orders
+   */
+  private async getUserTierFromCompletedOrders(userId: number): Promise<number> {
+    const result = await this.prisma.order.aggregate({
+      _sum: {
+        total: true,
+      },
+      where: {
+        userId,
+        status: 'COMPLETED',
+        isDeleted: false,
+      },
+    });
+
+    return result._sum.total || 0;
+  }
 
   private readonly orderInclude = {
     user: true,
@@ -108,119 +126,145 @@ export class OrdersService {
       );
     }
 
-    const createdOrder = await this.prisma.$transaction(async (prisma) => {
-      const user = await prisma.user.findUnique({
-        where: { id: userId },
-      });
+    const createdOrder = await this.prisma.$transaction(
+      async (prisma) => {
+        const user = await prisma.user.findUnique({
+          where: { id: userId },
+        });
 
-      if (!user) {
-        throw new BadRequestException('User not found');
-      }
-
-      if (usedPoint < 0) {
-        throw new BadRequestException('usedPoint cannot be negative');
-      }
-
-      if (usedPoint > user.loyaltyPoint) {
-        throw new BadRequestException('Not enough loyalty points');
-      }
-
-      const productIds = [...new Set(items.map((item) => item.productId))];
-
-      const products = await prisma.product.findMany({
-        where: { id: { in: productIds } },
-      });
-
-      const productMap = new Map(products.map((product) => [product.id, product]));
-
-      let subtotal = 0;
-
-      const order = await prisma.order.create({
-        data: {
-          userId,
-          phone,
-          address,
-          status: 'PENDING',
-          total: 0,
-          usedPoint,
-          earnedPoint: 0,
-          isDeleted: false,
-        },
-      });
-
-      for (const item of items) {
-        if (item.quantity <= 0) {
-          throw new BadRequestException('Quantity must be greater than 0');
+        if (!user) {
+          throw new BadRequestException('User not found');
         }
 
-        const product = productMap.get(item.productId);
-        if (!product) {
-          throw new BadRequestException(`Product ${item.productId} not found`);
+        if (usedPoint < 0) {
+          throw new BadRequestException('usedPoint cannot be negative');
         }
 
-        const orderItem = await prisma.orderItem.create({
+        if (usedPoint > user.loyaltyPoint) {
+          throw new BadRequestException('Not enough loyalty points');
+        }
+
+        const productIds = [...new Set(items.map((item) => item.productId))];
+
+        const products = await prisma.product.findMany({
+          where: { id: { in: productIds } },
+        });
+
+        const productMap = new Map(
+          products.map((product) => [product.id, product]),
+        );
+
+        let subtotal = 0;
+
+        const order = await prisma.order.create({
+          data: {
+            userId,
+            phone,
+            address,
+            status: 'PENDING',
+            total: 0,
+            usedPoint,
+            earnedPoint: 0,
+            isDeleted: false,
+          },
+        });
+
+        for (const item of items) {
+          if (item.quantity <= 0) {
+            throw new BadRequestException('Quantity must be greater than 0');
+          }
+
+          const product = productMap.get(item.productId);
+
+          if (!product) {
+            throw new BadRequestException(
+              `Product ${item.productId} not found`,
+            );
+          }
+
+          await prisma.orderItem.create({
+            data: {
+              orderId: order.id,
+              productId: product.id,
+              quantity: item.quantity,
+              productName: product.name,
+              basePrice: product.price,
+            },
+          });
+
+          subtotal += product.price * item.quantity;
+        }
+
+        // Tính giảm giá hạng dựa trên các đơn COMPLETED
+        const completedOrdersTotal =
+          await this.getUserTierFromCompletedOrders(userId);
+
+        const discountPercentage =
+          getDiscountPercentageByTier(completedOrdersTotal);
+
+        const discountAmount = Math.floor(subtotal * discountPercentage);
+
+        // Không cho dùng điểm vượt quá số tiền sau giảm giá hạng
+        const maxAllowedDiscount = subtotal - discountAmount;
+
+        if (usedPoint > maxAllowedDiscount) {
+          throw new BadRequestException(
+            `usedPoint (${usedPoint}) cannot exceed ${maxAllowedDiscount} (subtotal - tier discount)`,
+          );
+        }
+
+        // Tổng tiền cuối cùng khách phải thanh toán
+        const total = Math.max(0, subtotal - usedPoint - discountAmount);
+
+        // Điểm tích lũy = 10% tổng tiền thanh toán cuối cùng
+        const earnedPoint = Math.floor(total * 0.1);
+
+        if (usedPoint > 0) {
+          await prisma.user.update({
+            where: { id: userId },
+            data: {
+              loyaltyPoint: { decrement: usedPoint },
+            },
+          });
+        }
+
+        await prisma.payment.create({
           data: {
             orderId: order.id,
-            productId: product.id,
-            quantity: item.quantity,
-            productName: product.name,
-            basePrice: product.price,
+            method: paymentMethodToUse,
+            status: 'PENDING',
+            amount: total,
           },
         });
 
-        const itemSubtotal = product.price * item.quantity;
-
-        subtotal += itemSubtotal;
-      }
-
-      if (usedPoint > subtotal) {
-        throw new BadRequestException('usedPoint exceeds order total');
-      }
-
-      const discountPercentage = getDiscountPercentageByTier(user.totalSpent);
-      const discountAmount = Math.floor(subtotal * discountPercentage);
-      const total = subtotal - usedPoint - discountAmount;
-      const earnedPoint = calculateEarnedPoints(total);
-
-      if (usedPoint > 0) {
-        await prisma.user.update({
-          where: { id: userId },
+        await prisma.orderLog.create({
           data: {
-            loyaltyPoint: { decrement: usedPoint },
+            orderId: order.id,
+            status: 'PENDING',
+            note: `Order created${
+              discountPercentage > 0
+                ? ` - Applied ${
+                    discountPercentage * 100
+                  }% tier discount (${discountAmount} VND)`
+                : ''
+            }`,
           },
         });
-      }
 
-      await prisma.payment.create({
-        data: {
-          orderId: order.id,
-          method: paymentMethodToUse,
-          status: 'PENDING',
-          amount: total,
-        },
-      });
-
-      await prisma.orderLog.create({
-        data: {
-          orderId: order.id,
-          status: 'PENDING',
-          note: `Order created${discountPercentage > 0 ? ` - Applied ${discountPercentage * 100}% tier discount (${discountAmount} VND)` : ''}`,
-        },
-      });
-
-      return prisma.order.update({
-        where: { id: order.id },
-        data: {
-          total,
-          earnedPoint,
-        },
-        include: this.orderInclude,
-      });
-
-    }, {
-      maxWait: 10000,
-      timeout: 20000,
-    });
+        return prisma.order.update({
+          where: { id: order.id },
+          data: {
+            total,
+            earnedPoint,
+          },
+          include: this.orderInclude,
+        });
+      },
+      {
+        maxWait: 10000,
+        timeout: 20000,
+      },
+    );
 
     this.ordersGateway.emitNewOrder(createdOrder);
     return createdOrder;
@@ -247,19 +291,16 @@ export class OrdersService {
       );
     }
 
-    // Staff confirmation validation
     if (status === 'CONFIRMED' && order.status === 'PENDING') {
       const latestVnpayPayment = [...(order.payments ?? [])]
         .filter((payment) => payment.method === 'VNPAY')
         .sort((a, b) => b.id - a.id)[0];
 
-      // For VNPAY, staff can only confirm after successful payment.
       if (latestVnpayPayment && latestVnpayPayment.status !== 'SUCCESS') {
         throw new BadRequestException(
-          `Cannot confirm order with VNPAY payment that is not successful. Current payment status: ${latestVnpayPayment.status}`
+          `Cannot confirm order with VNPAY payment that is not successful. Current payment status: ${latestVnpayPayment.status}`,
         );
       }
-      // For COD/CASH, staff can confirm directly when order is PENDING
     }
 
     const updated = await this.prisma.$transaction(async (prisma) => {
@@ -277,6 +318,7 @@ export class OrdersService {
         },
       });
 
+      // Chỉ khi đơn COMPLETED mới cộng điểm vào user
       if (status === 'COMPLETED') {
         await prisma.user.update({
           where: { id: order.userId },
@@ -288,6 +330,7 @@ export class OrdersService {
         });
       }
 
+      // Nếu hủy đơn thì hoàn lại điểm đã dùng
       if (status === 'CANCELLED' && order.usedPoint > 0) {
         await prisma.user.update({
           where: { id: order.userId },
@@ -325,8 +368,13 @@ export class OrdersService {
     const updatedOrder = await this.prisma.$transaction(async (prisma) => {
       const updateData: Record<string, unknown> = {};
 
-      if (hasPhone) updateData.phone = data.phone;
-      if (hasAddress) updateData.address = data.address;
+      if (hasPhone) {
+        updateData.phone = data.phone;
+      }
+
+      if (hasAddress) {
+        updateData.address = data.address;
+      }
 
       if (hasUsedPoint) {
         const nextUsedPoint = data.usedPoint ?? 0;
@@ -344,26 +392,59 @@ export class OrdersService {
         }
 
         const availablePoints = user.loyaltyPoint + order.usedPoint;
+
         if (nextUsedPoint > availablePoints) {
           throw new BadRequestException('Not enough loyalty points');
         }
 
-        const subtotal = order.total + order.usedPoint;
-        if (nextUsedPoint > subtotal) {
-          throw new BadRequestException('usedPoint exceeds order total');
+        // Tính lại subtotal từ item, không lấy order.total + usedPoint
+        // vì order.total đã bị ảnh hưởng bởi discountAmount cũ
+        const subtotal = order.items.reduce((sum, item) => {
+          return sum + item.basePrice * item.quantity;
+        }, 0);
+
+        const completedOrdersTotal =
+          await this.getUserTierFromCompletedOrders(order.userId);
+
+        const discountPercentage =
+          getDiscountPercentageByTier(completedOrdersTotal);
+
+        const newDiscountAmount = Math.floor(subtotal * discountPercentage);
+
+        const maxAllowedDiscount = subtotal - newDiscountAmount;
+
+        if (nextUsedPoint > maxAllowedDiscount) {
+          throw new BadRequestException(
+            `usedPoint (${nextUsedPoint}) cannot exceed ${maxAllowedDiscount} (subtotal - tier discount)`,
+          );
         }
 
-        const discountPercentage = getDiscountPercentageByTier(user.totalSpent);
-        const newDiscountAmount = Math.floor(subtotal * discountPercentage);
         const pointDifference = nextUsedPoint - order.usedPoint;
-        const newTotal = subtotal - nextUsedPoint - newDiscountAmount;
-        const newEarnedPoint = calculateEarnedPoints(newTotal);
 
-        if (pointDifference !== 0) {
+        const newTotal = Math.max(
+          0,
+          subtotal - nextUsedPoint - newDiscountAmount,
+        );
+
+        // Điểm tích lũy = 10% tổng tiền thanh toán cuối cùng
+        const newEarnedPoint = Math.floor(newTotal * 0.1);
+
+        // Nếu tăng số điểm dùng thì trừ thêm
+        if (pointDifference > 0) {
           await prisma.user.update({
             where: { id: order.userId },
             data: {
               loyaltyPoint: { decrement: pointDifference },
+            },
+          });
+        }
+
+        // Nếu giảm số điểm dùng thì hoàn lại
+        if (pointDifference < 0) {
+          await prisma.user.update({
+            where: { id: order.userId },
+            data: {
+              loyaltyPoint: { increment: Math.abs(pointDifference) },
             },
           });
         }
@@ -380,13 +461,6 @@ export class OrdersService {
       });
 
       if (hasUsedPoint) {
-        const user = await this.prisma.user.findUnique({
-          where: { id: order.userId },
-        });
-        const discountPercentage = getDiscountPercentageByTier(user?.totalSpent || 0);
-        const subtotal = order.total + order.usedPoint;
-        const newDiscountAmount = Math.floor(subtotal * discountPercentage);
-        
         await prisma.payment.updateMany({
           where: {
             orderId: id,
@@ -401,7 +475,7 @@ export class OrdersService {
           data: {
             orderId: id,
             status: 'PENDING',
-            note: `Updated loyalty points usage from ${order.usedPoint} to ${updated.usedPoint}${discountPercentage > 0 ? ` - Applied ${discountPercentage * 100}% tier discount (${newDiscountAmount} VND)` : ''}`,
+            note: `Updated loyalty points usage from ${order.usedPoint} to ${updated.usedPoint}`,
           },
         });
       }

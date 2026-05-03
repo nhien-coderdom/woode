@@ -90,7 +90,7 @@ function LoyaltyCard({ user, formatPrice }: LoyaltyCardProps) {
             <div className="bg-purple-50 rounded-lg p-3">
               <p className="text-xs text-[#6F5A3A] font-medium">Điểm</p>
               <p className="font-bold text-lg text-[#A87822] mt-1">
-                {user.loyaltyPoint || 0}
+                {(user.loyaltyPoint ?? 0).toLocaleString()}
               </p>
             </div>
           </div>
@@ -148,7 +148,7 @@ function LoyaltyCard({ user, formatPrice }: LoyaltyCardProps) {
             <p className="font-semibold mb-1 text-[#2A1E13]">Quyền lợi</p>
 
             <ul className="text-sm text-[#6F5A3A] space-y-1">
-              <li>💰 Tích điểm từ mỗi đơn hàng (10% giá gốc, trước discount)</li>
+              <li>💰 Tích điểm từ mỗi đơn hàng (10% tổng tiền thanh toán)</li>
               <li>🎁 Dùng điểm để giảm giá (1.000 điểm = 1.000đ)</li>
               <li>📈 Hạng càng cao, ưu đãi càng lớn</li>
             </ul>
